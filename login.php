@@ -55,8 +55,31 @@ ini_set("display_errors", true);
         </div>
         <!--content wrapper starts-->
         <div class="content_wrapper">
-          test;
+        <div class="loginForm" align="center">
+    <form method="post" action="">
+        <table width="500" align="center" bgcolor="gray">
+            <tr align="center">
+                <td colspan="4"><h2>Login or Register<h2></td>
+            </tr>
+            <tr>
+                <td align="right"><b>Email: </b></td>
+                <td><input type="text" name="email" placeholder="Enter Email" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><b>Password: </b></td>
+                <td><input type="password" name="pass" placeholder="Enter Password" required/></td>
+            </tr>
+            <tr align="center">
+                <td colspan="3"><input type="submit" name="login" value="login" /></td>
+            </tr>
+
+
+
+        </table>
+        <h2 style="float:center; padding='15px' "><a href="register.php" style="text-decoration:none; color:white">Register Here</a><h2>
+    </form>
         </div>
+                </div>
         <!--content wrapper ends-->
         <!--footer starts-->
         <div id="footer">

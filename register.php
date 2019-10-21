@@ -1,8 +1,3 @@
-<?php
-ini_set("display_errors", true);
-    session_start();
-    // include("functions/functions.php");
-?>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -55,7 +50,44 @@ ini_set("display_errors", true);
         </div>
         <!--content wrapper starts-->
         <div class="content_wrapper">
-          test;
+        <form action="customer_register.php" method="post" enctype="multipart/form-data">
+                    <h2 align="center">Create an account</h2>
+                    <table align="center" width="750">
+                    <tr>
+                        <td align="right" style="color: white">Username:</td>
+                        <td><input type="text" name="username" required/></td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="color: white">Password:</td>
+                        <td><input type="password" name="password" required/></td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="color: white">First Name:</td>
+                        <td><input type="text" name="firstname" required/></td>
+                    </tr>
+
+                    <tr>
+                        <td align="right" style="color: white">Surname:</td>
+                        <td><input type="text" name="surname" required/></td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="color: white">Profile Photo:</td>
+                        <td><input type="file" name="profilePhoto" required/></td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="color: white">Contact:</td>
+                        <td><input type="text" name="PhoneNumber" required/></td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="color: white">Email:</td>
+                        <td><input type="text" name="email" required></td>
+                    </tr>
+
+                <tr align="right">
+                    <td><input type="submit" name="register" value="Create Account" style="margin-left: 70px;"/></td>
+                </tr>
+            </table> 
+</form>    
         </div>
         <!--content wrapper ends-->
         <!--footer starts-->
