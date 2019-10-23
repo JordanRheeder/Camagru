@@ -1,6 +1,7 @@
 <?php
 ini_set("display_errors", true);
-    session_start();
+include ("config/db_setup.php");
+session_start();
     // include("functions/functions.php");
 ?>
 <html lang="en" dir="ltr">

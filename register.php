@@ -50,16 +50,16 @@
         </div>
         <!--content wrapper starts-->
         <div class="content_wrapper">
-        <form action="customer_register.php" method="post" enctype="multipart/form-data">
+        <form action="index.php" method="post" enctype="multipart/form-data">
                     <h2 align="center">Create an account</h2>
                     <table align="center" width="750">
                     <tr>
                         <td align="right" style="color: white">Username:</td>
-                        <td><input type="text" name="username" required/></td>
+                        <td><input type="text" name="user_name" required/></td>
                     </tr>
                     <tr>
                         <td align="right" style="color: white">Password:</td>
-                        <td><input type="password" name="password" required/></td>
+                        <td><input type="password" name="user_passwd" required/></td>
                     </tr>
                     <tr>
                         <td align="right" style="color: white">First Name:</td>
@@ -97,3 +97,18 @@
         <!--footer ends-->
   </body>
 </html>
+<?php
+    if (isset($_POST['register'])) {;
+        $username = $_POST['user_name'];
+        $password = $_POST['user_passwd'];
+        $firstname = $_POST['firstname'];
+        $surname = $_POST['surname'];
+        $image = $_FILES['profilePhoto']['name'];
+        $image_tmp = $_FILES['profilePhoto']['tmp_name'];
+        $contact = $_POST['PhoneNumber'];
+        $email = $_POST['email'];
+        move_uploaded_file($image_tmp, "users/user_images/$image");
+        $sql = "INSERT INTO users (`user_name`, `user_passwd`, `user_firstname`, `user_surname`, `user_email`, `user_contact`, `user_image`) VALUES ('$username','$password','$firstname','$surname','$image_tmp','$contact','$email')";
+        $pdo->prepare($sql)->execute([$username,$password,$firstname,$surname,$image_tmp,$contact,$email]);
+    }
+?>
