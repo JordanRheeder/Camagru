@@ -131,7 +131,8 @@ if (session_id() === "") {
             //********* Fetch from table to verify *********
             $row = $verify->fetch();
             $check_email  = $row['user_email'];
-            $check_passwd  = hash('whirlpool', $row['user_passwd']);
+            $check_passwd  = $row['user_passwd'];
+            // $check_passwd  = hash('whirlpool', $row['user_passwd']);
             $check_userID = $row['user_id'];
             //**********************************************
             
@@ -139,7 +140,8 @@ if (session_id() === "") {
 
             // print("email=: $email -> DB-email=: $check_email\npasswd=:$passwd -> DB-passwd=:$check_passwd\n");
             // print("user_name=:  $user_name\n");
-            if (($email === $check_email) && (hash('whirlpool',$passwd) === $check_passwd)) {
+            // if (($email === $check_email) && (hash('whirlpool',$passwd) === $check_passwd)) {
+            if (($email === $check_email) && ($passwd === $check_passwd)) {
               // echo "email: ".$email;
               echo "<script>alert('Logged in');</script>";
               echo "<script>window.open('login.php', '_self')</script>";
