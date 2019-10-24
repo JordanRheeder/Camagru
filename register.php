@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -15,13 +18,19 @@
         <div class="menubar">
             <ul id="menu">
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="#">PH</a></li>
+                    <li><a href="my_account.php">My Account</a></li>
                     <li><a href="#">PH</a></li>
             </ul>
             <div class="dropdown">
                     <button onclick="myFunction()" class="dropbtn">Login - Register</button>
                     <div id="myDropdown" class="dropdown-content">
-                      <a href="login.php">Login</a>
+                    <?php
+                       if(isset($_SESSION['user_email'])) {
+                        echo "<a href='login.php?Logout=TRUE'>Logout</a>";
+                        } else {
+                          echo "<a href='login.php'>Login</a>";
+                        }
+                      ?>
                       <a href="register.php">Register</a>
                       <a href="fml.php">Forgot account-temp-</a>
                     </div>
@@ -54,8 +63,8 @@
                     <h2 align="center">Create an account</h2>
                     <table align="center" width="750">
                     <tr>
-                        <td align="right" style="color: white">Username:</td>
-                        <td><input type="text" name="username" required/></td>
+                        <td align="right" style="color: white">Email:</td>
+                        <td><input type="text" name="email" required></td>
                     </tr>
                     <tr>
                         <td align="right" style="color: white">Password:</td>
@@ -79,10 +88,7 @@
                         <td align="right" style="color: white">Contact:</td>
                         <td><input type="text" name="PhoneNumber" required/></td>
                     </tr>
-                    <tr>
-                        <td align="right" style="color: white">Email:</td>
-                        <td><input type="text" name="email" required></td>
-                    </tr>
+
 
                 <tr align="right">
                     <td><input type="submit" name="register" value="Create Account" style="margin-left: 70px;"/></td>
@@ -108,7 +114,6 @@
   if (isset($_POST['register']))
   {
     try {
-        $username = $_POST['username'];
         $passwd = hash('whirlpool',$_POST['user_passwd']);
         $firstname = $_POST['firstname'];
         $surname = $_POST['surname'];
@@ -122,7 +127,7 @@
         // $sql = ("INSERT INTO `users` (user_name, user_passwd, user_firstname, user_surname, user_email, user_contact, user_image) VALUES (:username, :passwd, :firstname, :surname, :img, :contact, :email, NOW())");
         // $pdo->prepare($sql)->execute($username,$password,$firstname,$surname,$image_tmp,$contact,$email);
         // $query = "INSERT INTO `users` (user_name, user_passwd, user_firstname, user_surname, user_email, user_contact, user_image) VALUES (:user_name,:user_passwd,:user_firstname,:user_surname,:user_email,:user_contact,:user_image)";
-        $query = "INSERT INTO `users` (user_name, user_passwd, user_firstname, user_surname, user_email, user_contact, user_image) VALUES (?,?,?,?,?,?,?)";
+        $query = "INSERT INTO `users` (user_passwd, user_firstname, user_surname, user_email, user_contact, user_image) VALUES (?,?,?,?,?,?)";
         $query = $dbh->prepare($query);
         // $query->bindParam(':user_name', $username);
         // $query->bindParam(':user_passwd', $passwd);
@@ -133,33 +138,34 @@
         // $query->bindParam(':user_image', $img);
  
         //********* checking the database for existing emails or users *********
-        $verifySQL = ("SELECT user_name, user_email FROM `users` WHERE user_email=:user_email AND user_name=:user_name");
+        // $verifySQL = ("SELECT user_email FROM `users` WHERE user_email=:user_email AND user_name=:user_name");
+        $verifySQL = ("SELECT user_email FROM `users` WHERE user_email=:user_email");
         $verify = $dbh->prepare($verifySQL);
         // $verify->bindParam(':user_email', $email);
         // $verify->bindParam(':user_name', $username);
         $verify->bindParam(':user_email', $email, PDO::PARAM_STR);
-        $verify->bindParam(':user_name', $username, PDO::PARAM_STR);
+        // $verify->bindParam(':user_name', $username, PDO::PARAM_STR);
         $verify->execute();
         $row = $verify->fetch();
 
         // print_r($sql);
         $check_email  = $row['user_email'];
-        $check_user   = $row['user_name'];
+        // $check_user   = $row['user_name'];
 
         // ********* Testing if output exists *********
         // print("test:".$check_email ."\n".$check_user);
         // print_r("rows"."\n".$row);
         //*********************************************
 
-        if (empty($row['user_name']) && empty($row['user_email'])) {
+        if (empty($row['user_email'])) {
         // print("Going to bind params and add to db.\n");
-        $query->bindParam('1', $username);
-        $query->bindParam('2', $passwd);
-        $query->bindParam('3', $firstname);
-        $query->bindParam('4', $surname);
-        $query->bindParam('5', $email);
-        $query->bindParam('6', $contact);
-        $query->bindParam('7', $img);
+        // $query->bindParam('1', $username);
+        $query->bindParam('1', $passwd);
+        $query->bindParam('2', $firstname);
+        $query->bindParam('3', $surname);
+        $query->bindParam('4', $email);
+        $query->bindParam('5', $contact);
+        $query->bindParam('6', $img);
         $query->execute();
         }
         else {

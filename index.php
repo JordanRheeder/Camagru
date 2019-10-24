@@ -1,7 +1,12 @@
 <?php
 ini_set("display_errors", true);
 include ("config/db_setup.php");
-session_start();
+if (session_id() === "") {
+  session_start();
+}else {
+  $session_id=session_id();
+  // echo ($session_id);
+}
     // include("functions/functions.php");
 ?>
 <html lang="en" dir="ltr">
@@ -21,13 +26,20 @@ session_start();
         <div class="menubar">
             <ul id="menu">
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="#">PH</a></li>
+                    <li><a href="my_account.php">My Account</a></li>
                     <li><a href="#">PH</a></li>
             </ul>
             <div class="dropdown">
                     <button onclick="myFunction()" class="dropbtn">Login - Register</button>
                     <div id="myDropdown" class="dropdown-content">
-                      <a href="login.php">Login</a>
+                      <?php
+                        if(isset($_SESSION['user_email'])) {
+                        echo "<a href='index.php?Logout=TRUE'>Logout</a>";
+                        }
+                        else {
+                          echo "<a href='login.php'>Login</a>";
+                        }
+                      ?>
                       <a href="register.php">Register</a>
                       <a href="fml.php">Forgot account-temp-</a>
                     </div>
@@ -56,7 +68,7 @@ session_start();
         </div>
         <!--content wrapper starts-->
         <div class="content_wrapper">
-          test;
+          <!-- test; -->
         </div>
         <!--content wrapper ends-->
         <!--footer starts-->
@@ -66,3 +78,13 @@ session_start();
         <!--footer ends-->
   </body>
 </html>
+<?php
+  if (isset($_GET['Logout'])) {
+    if ($_GET['Logout'] == 'TRUE')
+      session_destroy();
+      echo "<script>window.open('index.php', '_self')</script>";
+      // echo ("Will kill session");
+      // print_r($_SESSION);
+      // echo "<script>alert('Logged out');</script>";
+  }
+?>

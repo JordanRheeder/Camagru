@@ -1,7 +1,14 @@
 <?php
+include('functions.php');
 ini_set("display_errors", true);
-    // session_start();
-    // include("functions/functions.php");
+if (session_id() === "") {
+  session_start();
+}
+// if (!isset($_SESSION))
+//   {
+//     echo "starting session";
+//     session_start();
+//   }
 ?>
 <html lang="en" dir="ltr">
   <head>
@@ -20,13 +27,19 @@ ini_set("display_errors", true);
         <div class="menubar">
             <ul id="menu">
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="#">PH</a></li>
+                    <li><a href="my_account.php">My Account</a></li>
                     <li><a href="#">PH</a></li>
             </ul>
             <div class="dropdown">
                     <button onclick="myFunction()" class="dropbtn">Login - Register</button>
                     <div id="myDropdown" class="dropdown-content">
-                      <a href="login.php">Login</a>
+                    <?php
+                       if(isset($_SESSION['user_email'])) {
+                          echo "<a href='login.php?Logout=TRUE'>Logout</a>";
+                        } else {
+                          echo "<a href='login.php'>Login</a>";
+                        }
+                      ?>
                       <a href="register.php">Register</a>
                       <a href="fml.php">Forgot account-temp-</a>
                     </div>
@@ -105,11 +118,13 @@ ini_set("display_errors", true);
             $passwd = hash('whirlpool', $_POST['pass']);
         
             //********* Select password and email from the database to check whether it's a match. Then login... *********
-            $verifySQL = ("SELECT user_passwd, user_email, user_id FROM `users` WHERE user_passwd=:user_passwd AND user_email=:user_email");
+            // $verifySQL = ("SELECT user_passwd, user_email, user_name FROM `users` WHERE user_passwd=:user_passwd AND user_email=:user_email AND user_name=:user_name");
+            $verifySQL = ("SELECT * FROM `users` WHERE user_passwd=:user_passwd AND user_email=:user_email");
             $verify = $dbh->prepare($verifySQL);
             $verify->bindParam(':user_email', $email, PDO::PARAM_STR);
             $verify->bindParam(':user_passwd', $passwd, PDO::PARAM_STR);
-            // $verify->bindParam(':user_id', $passwd, PDO::PARAM_STR);
+            // $verify->bindParam(':user_name', $, PDO::PARAM_STR);
+            // print_r($verifySQL);
             $verify->execute();
             //************************************************************************************************************
           
@@ -123,41 +138,23 @@ ini_set("display_errors", true);
             //********* Compare values from DB to input, IF match THEN Login ELSE kick off *********
 
             // print("email=: $email -> DB-email=: $check_email\npasswd=:$passwd -> DB-passwd=:$check_passwd\n");
+            // print("user_name=:  $user_name\n");
             if (($email === $check_email) && (hash('whirlpool',$passwd) === $check_passwd)) {
+              // echo "email: ".$email;
               echo "<script>alert('Logged in');</script>";
-              echo "<script>window.open('index.php', '_self')</script>";
-            } else {
-              echo "<script>alert('Incorrect username or password');</script>";
+              echo "<script>window.open('login.php', '_self')</script>";
+                $_SESSION['user_email'] = $email;
+            }else {
+              echo "<script>alert('Incorrect email or password');</script>";
             }
             } catch(PDOException $e) {
               echo "ERROR: ".$e->getMessage();
               exit(2);
             }
-
-            //**************************************************************************************
-
-            // $sel_c = "select * from customers where customer_pass='$c_pass' AND customer_email='$c_email'";
-            // $run_c = mysqli_query($con, $sel_c);
-            // $check_customer = mysqli_num_rows($run_c);
-            // if ($check_customer==0) {
-            //     echo "<script>alert('Password or email is incorrect, please try again.')</script>";
-            //     // exit();
-            //     echo "<script>window.open('index.php','_self')</script>";
-            //     exit();
-            // }
-            // $ip = getIP();
-            // $sel_cart = "select * from cart where ip_add='$ip'";
-            // $run_cart = mysqli_query($con, $sel_cart);
-            // $check_cart = mysqli_num_rows($run_cart);
-            // if ($check_customer>0 AND $check_cart==0){
-            //     $_SESSION['customer_email'] = $c_email;
-            //     echo "<script>alert('You logged in')</script>";
-            //     echo "<script>window.open('index.php','_self')</script>";
-            // }
-            // else {
-                // $_SESSION['customer_email'] = $c_email;
-                // echo "<script>alert('You logged in')</script>";
-                // echo "<script>window.open('checkout.php','_self')</script>";
           }
-
+        // ******* LOG OUT ********
+        if (isset($_GET['Logout'])) {
+          logout();
+        }
+        // ************************
 ?>
