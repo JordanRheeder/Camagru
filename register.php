@@ -50,12 +50,12 @@
         </div>
         <!--content wrapper starts-->
         <div class="content_wrapper">
-        <form action="index.php" method="post" enctype="multipart/form-data">
+        <form action="register.php" method="post" enctype="multipart/form-data">
                     <h2 align="center">Create an account</h2>
                     <table align="center" width="750">
                     <tr>
                         <td align="right" style="color: white">Username:</td>
-                        <td><input type="text" name="user_name" required/></td>
+                        <td><input type="text" name="username" required/></td>
                     </tr>
                     <tr>
                         <td align="right" style="color: white">Password:</td>
@@ -72,7 +72,8 @@
                     </tr>
                     <tr>
                         <td align="right" style="color: white">Profile Photo:</td>
-                        <td><input type="file" name="profilePhoto" required/></td>
+                        <!-- <td><input type="file" name="profilePhoto" required/></td> ADD THIS IN LATER************************-->
+                        <td><input type="file" name="profilePhoto"/></td>
                     </tr>
                     <tr>
                         <td align="right" style="color: white">Contact:</td>
@@ -96,19 +97,78 @@
         </div>
         <!--footer ends-->
   </body>
-</html>
-<?php
-    if (isset($_POST['register'])) {;
-        $username = $_POST['user_name'];
-        $password = $_POST['user_passwd'];
+  <?php
+    
+    try {
+      include ('config/connect.php');
+    } catch(PDOException $e) {
+      echo "ERROR: ".$e->getMessage();
+      exit(2);
+  }
+  if (isset($_POST['register']))
+  {
+    try {
+        $username = $_POST['username'];
+        $passwd = hash('whirlpool',$_POST['user_passwd']);
         $firstname = $_POST['firstname'];
         $surname = $_POST['surname'];
-        $image = $_FILES['profilePhoto']['name'];
+        $img = $_FILES['profilePhoto']['name'];
         $image_tmp = $_FILES['profilePhoto']['tmp_name'];
         $contact = $_POST['PhoneNumber'];
         $email = $_POST['email'];
-        move_uploaded_file($image_tmp, "users/user_images/$image");
-        $sql = "INSERT INTO users (`user_name`, `user_passwd`, `user_firstname`, `user_surname`, `user_email`, `user_contact`, `user_image`) VALUES ('$username','$password','$firstname','$surname','$image_tmp','$contact','$email')";
-        $pdo->prepare($sql)->execute([$username,$password,$firstname,$surname,$image_tmp,$contact,$email]);
-    }
+        // print("$username, $passwd, $firstname, $surname, $img, $image_tmp, $contact, $email"); // verify inputs.
+        move_uploaded_file($image_tmp, "users/user_images/$img");
+        // $data = array($username,$passwd,$firstname,$surname,$img,$contact,$email);
+        // $sql = ("INSERT INTO `users` (user_name, user_passwd, user_firstname, user_surname, user_email, user_contact, user_image) VALUES (:username, :passwd, :firstname, :surname, :img, :contact, :email, NOW())");
+        // $pdo->prepare($sql)->execute($username,$password,$firstname,$surname,$image_tmp,$contact,$email);
+        // $query = "INSERT INTO `users` (user_name, user_passwd, user_firstname, user_surname, user_email, user_contact, user_image) VALUES (:user_name,:user_passwd,:user_firstname,:user_surname,:user_email,:user_contact,:user_image)";
+        $query = "INSERT INTO `users` (user_name, user_passwd, user_firstname, user_surname, user_email, user_contact, user_image) VALUES (?,?,?,?,?,?,?)";
+        $query = $dbh->prepare($query);
+        // $query->bindParam(':user_name', $username);
+        // $query->bindParam(':user_passwd', $passwd);
+        // $query->bindParam(':user_firstname', $firstname);
+        // $query->bindParam(':user_surname', $surname);
+        // $query->bindParam(':user_email', $email);
+        // $query->bindParam(':user_contact', $contact);
+        // $query->bindParam(':user_image', $img);
+ 
+        //********* checking the database for existing emails or users *********
+        $verifySQL = ("SELECT user_name, user_email FROM `users` WHERE user_email=:user_email AND user_name=:user_name");
+        $verify = $dbh->prepare($verifySQL);
+        // $verify->bindParam(':user_email', $email);
+        // $verify->bindParam(':user_name', $username);
+        $verify->bindParam(':user_email', $email, PDO::PARAM_STR);
+        $verify->bindParam(':user_name', $username, PDO::PARAM_STR);
+        $verify->execute();
+        $row = $verify->fetch();
+
+        // print_r($sql);
+        $check_email  = $row['user_email'];
+        $check_user   = $row['user_name'];
+
+        // ********* Testing if output exists *********
+        // print("test:".$check_email ."\n".$check_user);
+        // print_r("rows"."\n".$row);
+        //*********************************************
+
+        if (empty($row['user_name']) && empty($row['user_email'])) {
+        // print("Going to bind params and add to db.\n");
+        $query->bindParam('1', $username);
+        $query->bindParam('2', $passwd);
+        $query->bindParam('3', $firstname);
+        $query->bindParam('4', $surname);
+        $query->bindParam('5', $email);
+        $query->bindParam('6', $contact);
+        $query->bindParam('7', $img);
+        $query->execute();
+        }
+        else {
+          echo "<script>alert('You already have an account!');</script>";
+        }
+    } catch(PDOException $e) {
+      echo "ERROR: ".$e->getMessage();
+      exit(2);
+  }
+}
 ?>
+</html>
