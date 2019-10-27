@@ -103,54 +103,54 @@ if (session_id() === "") {
 </html>
 
 <?php
-	  //********* Try connect to db, else echo error *********
+	//********* Try connect to db, else echo error *********
 	try {
 		include ('config/connect.php');
 	}
 	catch(PDOException $e) {
 		echo "ERROR: ".$e->getMessage();
 		exit(2);
-	  }
-	  //******************************************************
+	}
+	//******************************************************
 
 		if (isset($_POST['login'])) {
-		  try {
-			$email = $_POST['email'];
-			$passwd = hash('whirlpool', $_POST['pass']);
+			try {
+				$email = $_POST['email'];
+				$passwd = hash('whirlpool', $_POST['pass']);
 
-			//********* Select password and email from the database to check whether it's a match. Then login... *********
-			// $verifySQL = ("SELECT user_passwd, user_email, user_name FROM `users` WHERE user_passwd=:user_passwd AND user_email=:user_email AND user_name=:user_name");
-			$verifySQL = ("SELECT * FROM `users` WHERE user_passwd=:user_passwd AND user_email=:user_email");
-			$verify = $dbh->prepare($verifySQL);
-			$verify->bindParam(':user_email', $email, PDO::PARAM_STR);
-			$verify->bindParam(':user_passwd', $passwd, PDO::PARAM_STR);
-			// $verify->bindParam(':user_name', $, PDO::PARAM_STR);
-			// print_r($verifySQL);
-			$verify->execute();
-			//************************************************************************************************************
+				//********* Select password and email from the database to check whether it's a match. Then login... *********
+				// $verifySQL = ("SELECT user_passwd, user_email, user_name FROM `users` WHERE user_passwd=:user_passwd AND user_email=:user_email AND user_name=:user_name");
+				$verifySQL = ("SELECT * FROM `users` WHERE user_passwd=:user_passwd AND user_email=:user_email");
+				$verify = $dbh->prepare($verifySQL);
+				$verify->bindParam(':user_email', $email, PDO::PARAM_STR);
+				$verify->bindParam(':user_passwd', $passwd, PDO::PARAM_STR);
+				// $verify->bindParam(':user_name', $, PDO::PARAM_STR);
+				// print_r($verifySQL);
+				$verify->execute();
+				//************************************************************************************************************
 
-			//********* Fetch from table to verify *********
-			$row = $verify->fetch();
-			$check_email  = $row['user_email'];
-			$check_passwd  = $row['user_passwd'];
-			// $check_passwd  = hash('whirlpool', $row['user_passwd']);
-			$check_userID = $row['user_id'];
-			//**********************************************
+				//********* Fetch from table to verify *********
+				$row = $verify->fetch();
+				$check_email  = $row['user_email'];
+				$check_passwd  = $row['user_passwd'];
+				// $check_passwd  = hash('whirlpool', $row['user_passwd']);
+				$check_userID = $row['user_id'];
+				//**********************************************
 
-			//********* Compare values from DB to input, IF match THEN Login ELSE kick off *********
+				//********* Compare values from DB to input, IF match THEN Login ELSE kick off *********
 
-			// print("email=: $email -> DB-email=: $check_email\npasswd=:$passwd -> DB-passwd=:$check_passwd\n");
-			// print("user_name=:  $user_name\n");
-			// if (($email === $check_email) && (hash('whirlpool',$passwd) === $check_passwd)) {
-			if (($email === $check_email) && ($passwd === $check_passwd)) {
-			// echo "email: ".$email;
-				echo "<script>alert('Logged in');</script>";
-				echo "<script>window.open('login.php', '_self')</script>";
-				$_SESSION['user_email'] = $email;
-			}
-			else {
-				echo "<script>alert('Incorrect email or password');</script>";
-			}
+				// print("email=: $email -> DB-email=: $check_email\npasswd=:$passwd -> DB-passwd=:$check_passwd\n");
+				// print("user_name=:  $user_name\n");
+				// if (($email === $check_email) && (hash('whirlpool',$passwd) === $check_passwd)) {
+				if (($email === $check_email) && ($passwd === $check_passwd)) {
+				// echo "email: ".$email;
+					echo "<script>alert('Logged in');</script>";
+					echo "<script>window.open('login.php', '_self')</script>";
+					$_SESSION['user_email'] = $email;
+				}
+				else {
+					echo "<script>alert('Incorrect email or password')</script>";
+				}
 			}
 
 			catch(PDOException $e) {
@@ -160,7 +160,7 @@ if (session_id() === "") {
 		}
 		// ******* LOG OUT ********
 		if (isset($_GET['Logout'])) {
-		  logout();
+			logout();
 		}
 		// ************************
 ?>

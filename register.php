@@ -1,4 +1,5 @@
 <?php
+ini_set("display_errors", true);
 session_start();
 ?>
 <html lang="en" dir="ltr">
@@ -63,41 +64,42 @@ session_start();
 		<form action="register.php" method="post" enctype="multipart/form-data">
 					<h2 align="center">Create an account</h2>
 					<table align="center" width="750">
-					<tr>
-						<td align="right" style="color: white">Email:</td>
-						<td><input type="text" name="email" required></td>
-					</tr>
-					<tr>
-						<td align="right" style="color: white">Password:</td>
-						<td><input type="password" name="user_passwd" required/></td>
-					</tr>
-					<tr>
-						<td align="right" style="color: white">First Name:</td>
-						<td><input type="text" name="firstname" required/></td>
-					</tr>
+						<tr>
+							<td align="right" style="color: white">Email:</td>
+							<td><input type="text" name="email" required></td>
+						</tr>
+						<tr>
+							<td align="right" style="color: white">Password:</td>
+							<td><input type="password" name="user_passwd" required/></td>
+						</tr>
+						<tr>
+							<td align="right" style="color: white">First Name:</td>
+							<td><input type="text" name="firstname" required/></td>
+						</tr>
 
-					<tr>
-						<td align="right" style="color: white">Surname:</td>
-						<td><input type="text" name="surname" required/></td>
-					</tr>
-					<tr>
-						<td align="right" style="color: white">Profile Photo:</td>
-						<!-- <td><input type="file" name="profilePhoto" required/></td> ADD THIS IN LATER************************-->
-						<td><input type="file" name="profilePhoto"/></td>
-					</tr>
-					<tr>
-						<td align="right" style="color: white">Contact:</td>
-						<td><input type="text" name="PhoneNumber" required/></td>
-					</tr>
+						<tr>
+							<td align="right" style="color: white">Surname:</td>
+							<td><input type="text" name="surname" required/></td>
+						</tr>
+						<tr>
+							<td align="right" style="color: white">Profile Photo:</td>
+							<!-- <td><input type="file" name="profilePhoto" required/></td> ADD THIS IN LATER************************-->
+							<td><input type="file" name="profilePhoto"/></td>
+						</tr>
+						<tr>
+							<td align="right" style="color: white">Contact:</td>
+							<td><input type="text" name="PhoneNumber" required/></td>
+						</tr>
 
 
-				<tr align="right">
-					<td><input type="submit" name="register" value="Create Account" style="margin-left: 70px;"/></td>
-				</tr>
-			</table>
-</form>
+					<tr align="right">
+						<td><input type="submit" name="register" value="Create Account" style="margin-left: 70px;"/></td>
+					</tr>
+				</table>
+		</form>
 		</div>
 		<!--content wrapper ends-->
+
 		<!--footer starts-->
 		<div id="footer">
 			<h2 style="text-align:center; padding-top:30px;">jrheeder</h2>
@@ -109,7 +111,8 @@ session_start();
 	try {
 		include ('includes/functions.php');
 		include ('config/connect.php');
-	} catch(PDOException $e) {
+	}
+	catch(PDOException $e) {
 		echo "ERROR: ".$e->getMessage();
 		exit(2);
 	}
@@ -133,47 +136,21 @@ session_start();
 			$image_tmp = $_FILES['profilePhoto']['tmp_name'];
 			$contact = $_POST['PhoneNumber'];
 			$email = $_POST['email'];
-			$token = hash('md5', $contact);
+			$token = hash('md5', $email);
 			$verified = 0;
-			// print("$username, $passwd, $firstname, $surname, $img, $image_tmp, $contact, $email"); // verify inputs.
 			move_uploaded_file($image_tmp, "users/user_images/$img");
-			// $data = array($username,$passwd,$firstname,$surname,$img,$contact,$email);
-			// $sql = ("INSERT INTO `users` (user_name, user_passwd, user_firstname, user_surname, user_email, user_contact, user_image) VALUES (:username, :passwd, :firstname, :surname, :img, :contact, :email, NOW())");
-			// $pdo->prepare($sql)->execute($username,$password,$firstname,$surname,$image_tmp,$contact,$email);
-			// $query = "INSERT INTO `users` (user_name, user_passwd, user_firstname, user_surname, user_email, user_contact, user_image) VALUES (:user_name,:user_passwd,:user_firstname,:user_surname,:user_email,:user_contact,:user_image)";
 			$query = "INSERT INTO `users` (user_passwd, user_firstname, user_surname, user_email, user_contact, user_image, token, verified) VALUES (?,?,?,?,?,?,?,?)";
 			$query = $dbh->prepare($query);
-			// $query->bindParam(':user_name', $username);
-			// $query->bindParam(':user_passwd', $passwd);
-			// $query->bindParam(':user_firstname', $firstname);
-			// $query->bindParam(':user_surname', $surname);
-			// $query->bindParam(':user_email', $email);
-			// $query->bindParam(':user_contact', $contact);
-			// $query->bindParam(':user_image', $img);
 
 			//********* checking the database for existing emails or users *********
-			// $verifySQL = ("SELECT user_email FROM `users` WHERE user_email=:user_email AND user_name=:user_name");
 			$verifySQL = ("SELECT user_email FROM `users` WHERE user_email=:user_email");
 			$verify = $dbh->prepare($verifySQL);
-			// $verify->bindParam(':user_email', $email);
-			// $verify->bindParam(':user_name', $username);
 			$verify->bindParam(':user_email', $email, PDO::PARAM_STR);
-			// $verify->bindParam(':user_name', $username, PDO::PARAM_STR);
 			$verify->execute();
 			$row = $verify->fetch();
-
-			// print_r($sql);
 			$check_email  = $row['user_email'];
-			// $check_user   = $row['user_name'];
-
-			// ********* Testing if output exists *********
-			// print("test:".$check_email ."\n".$check_user);
-			// print_r("rows"."\n".$row);
-			//*********************************************
 
 			if (empty($row['user_email'])) {
-			// print("Going to bind params and add to db.\n");
-			// $query->bindParam('1', $username);
 			$query->bindParam('1', $passwd);
 			$query->bindParam('2', $firstname);
 			$query->bindParam('3', $surname);
@@ -183,15 +160,38 @@ session_start();
 			$query->bindParam('7', $token);
 			$query->bindParam('8', $verified);
 			$query->execute();
-			if (mailVerifCode($email, $token, $firstname));
-				echo "<script>alert('email created!');</script>";
-			echo "<script>alert('Account created!');</script>";
+				if (mailVerifCode($email, $token, $firstname))
+					echo "<script>alert('Account created!');</script>";
+			}
+			else
+				echo "<script>alert('You already have an account!');</script>";
+		}
+		catch(PDOException $e) {
+			echo "ERROR: ".$e->getMessage();
+			exit(2);
+		}
+	}
+
+	if (isset($_GET['token'])) {
+		$token = $_GET['token'];
+		// $verified = 1;
+		try {
+			// echo "<script>alert('tokes');</script>";
+			if (verify_token($token)) {
+				// echo "<script>alert('Updating');</script>";
+				$verifyToken = ("SELECT * FROM `users`");
+				$verifyToken = $dbh->prepare($verifyToken);
+				$verifyToken->execute();
+				$row = $verifyToken->fetch();
+				$updateValid = ("UPDATE `users` SET `verified` = 1 WHERE `token`=?");
+				$updateValid = $dbh->prepare($updateValid);
+				$updateValid->bindParam('1', $token, PDO::PARAM_STR);
+				$updateValid->execute();
 			}
 			else {
-				echo "<script>alert('You already have an account!');</script>";
+				echo "<script>alert('Failed, please try again.');</script>";
 			}
 		}
-
 		catch(PDOException $e) {
 			echo "ERROR: ".$e->getMessage();
 			exit(2);

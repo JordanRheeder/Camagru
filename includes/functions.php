@@ -13,6 +13,7 @@ function mailVerifCode($email, $token, $firstname) {
 	$message = "Good day, $firstname here is your verfication link:\n \t http://localhost:8080/Camagru/register.php?token=$token";
 	$headers = "From: jrheeder@student.wethinkcode.co.za";
 	mail($email,$subject,$message,$headers);
+	return (1);
 }
 
 function validate_email($check_mail) {
