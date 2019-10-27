@@ -1,14 +1,5 @@
 <?php
-	ini_set("display_errors", true);
-	include ("config/db_setup.php");
-	if (session_id() === "") {
-		session_start();
-	}
-	else {
-		$session_id=session_id();
-		// echo ($session_id);
-	}
-	// include("functions/functions.php");
+	session_start();
 ?>
 <html lang="en" dir="ltr">
   <head>
@@ -33,19 +24,19 @@
 			<div class="dropdown">
 					<button onclick="myFunction()" class="dropbtn">Login - Register</button>
 					<div id="myDropdown" class="dropdown-content">
-					  <?php
+					<?php
 						if(isset($_SESSION['user_email'])) {
-						echo "<a href='index.php?Logout=TRUE'>Logout</a>";
+							echo "<a href='my_account.php?Logout=TRUE'>Logout</a>";
 						}
 						else {
-						  echo "<a href='login.php'>Login</a>";
+							echo "<a href='login.php'>Login</a>";
 						}
-					  ?>
-					  <a href="register.php">Register</a>
-					  <a href="fml.php">Forgot account-temp-</a>
+					?>
+					<a href="register.php">Register</a>
+					<a href="fml.php">Forgot account-temp-</a>
 					</div>
-				</div>
-				<script>
+				  </div>
+				  <script>
 				  /* When the user clicks on the button,
 				  toggle between hiding and showing the dropdown content */
 				function myFunction() {
@@ -69,23 +60,36 @@
 		</div>
 		<!--content wrapper starts-->
 		<div class="content_wrapper">
-		  <!-- test; -->
+				<h1 style="text-align:left; padding-top:30px;">Hello
+					<?php
+						$user_email = $_SESSION['user_email'];
+						echo "user: $user_email";
+					?>
+				</h1>
 		</div>
 		<!--content wrapper ends-->
+
+
 		<!--footer starts-->
 		<div id="footer">
 			<h2 style="text-align:center; padding-top:30px;">jrheeder</h2>
 		</div>
 		<!--footer ends-->
-  </body>
+</body>
+<?php
+	try {
+		include ('config/connect.php');
+	}
+	catch(PDOException $e) {
+		echo "ERROR: ".$e->getMessage();
+		exit(2);
+	}
+?>
 </html>
 <?php
-  if (isset($_GET['Logout'])) {
-	if ($_GET['Logout'] == 'TRUE')
-	  session_destroy();
-	  echo "<script>window.open('index.php', '_self')</script>";
-	  // echo ("Will kill session");
-	  // print_r($_SESSION);
-	  // echo "<script>alert('Logged out');</script>";
-  }
+	if (isset($_GET['Logout'])) {
+		if ($_GET['Logout'] == 'TRUE')
+		session_destroy();
+		echo "<script>window.open('index.php', '_self')</script>";
+	}
 ?>
