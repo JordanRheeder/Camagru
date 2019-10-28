@@ -2,100 +2,129 @@
 ini_set("display_errors", true);
 session_start();
 ?>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
-	<head>
-		<meta charset="utf-8">
-		<title>Camagru</title>
-		<link rel="stylesheet" href="styles/index.css" media="all" />
+  <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Camagru</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 	</head>
 <body>
-	<div class="main_wrapper">
-		<div class="header_wrapper">
-			<a href="index.php">
-				<img id="banner" src="images/logom.png">
-			</a>
-		</div>
-		<!--Navigation bar starts-->
-		<div class="menubar">
-			<ul id="menu">
-					<li><a href="index.php">Home</a></li>
-					<li><a href="my_account.php">My Account</a></li>
-					<li><a href="#">PH</a></li>
-			</ul>
-			<div class="dropdown">
-					<button onclick="myFunction()" class="dropbtn">Login - Register</button>
-					<div id="myDropdown" class="dropdown-content">
-					<?php
-					   if(isset($_SESSION['user_email'])) {
-						echo "<a href='login.php?Logout=TRUE'>Logout</a>";
-						}
-						else {
-							echo "<a href='login.php'>Login</a>";
-						}
-					  ?>
-					  <a href="register.php">Register</a>
-					  <a href="reset.php">Forgot account-temp-</a>
-					</div>
-				  </div>
-				  <script>
-				  /* When the user clicks on the button,
-				  toggle between hiding and showing the dropdown content */
-				function myFunction() {
-					document.getElementById("myDropdown").classList.toggle("show");
-				}
+	<!-- <div class="main_wrapper"> -->
+		<nav class="navbar" role="navigation" aria-label="main navigation">
+		  <div class="navbar-brand">
+		    <a class="navbar-item" href="index.php">
+		      <img src="images/final.gif" width="112px" height="112px">
+		    </a>
 
-				  // Close the dropdown if the user clicks outside of it
-				window.onclick = function(event) {
-					if (!event.target.matches('.dropbtn')) {
-						var dropdowns = document.getElementsByClassName("dropdown-content");
-						var i;
-						for (i = 0; i < dropdowns.length; i++) {
-							var openDropdown = dropdowns[i];
-							if (openDropdown.classList.contains('show')) {
-								openDropdown.classList.remove('show');
-							}
-						}
-					}
+		    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+		      <span aria-hidden="true"></span>
+		      <span aria-hidden="true"></span>
+		      <span aria-hidden="true"></span>
+		    </a>
+		  </div>
+
+		  <div id="navbarBasicExample" class="navbar-menu">
+		    <div class="navbar-start">
+		      <a class="navbar-item" href="index.php">
+		        Home
+		      </a>
+
+
+			<?php
+				if(isset($_SESSION['user_email'])) {
+					// echo "<a href='index.php?Logout=TRUE'>Logout</a>";
+					echo "<a class='navbar-item' href='my_account.php'>My Account</a>";
 				}
-				</script>
+				else {
+					echo "";
+				}
+			?>
+		<div class="navbar-item has-dropdown is-hoverable">
+			<a class="navbar-link">
+				Placeholder
+			</a>
+
+		<div class="navbar-dropdown">
+			<a class="navbar-item">
+				Placeholder
+			</a>
+			<a class="navbar-item">
+				Placeholder
+			</a>
+			<a class="navbar-item">
+				Placeholder
+			</a>
+			<hr class="navbar-divider">
+				<a class="navbar-item">
+					Placeholder
+				</a>
 		</div>
+		</div>
+		</div>
+		<div class="navbar-end">
+		<div class="navbar-item">
+		<div class="buttons">
+			            <?php
+							if(isset($_SESSION['user_email'])) {
+								echo "";
+							}
+							else {
+								echo "<a class='button is-primary' href='register.php'>";
+								echo "<strong>Sign up</strong>";
+								echo "</a>";
+							}
+						?>
+		<?php
+			if(isset($_SESSION['user_email'])) {
+				echo "<a class='button is-light' href='login.php?Logout=TRUE'>Log out</a>";
+			}
+			else {
+				echo "<a class='button is-light' href='login.php'>Log in</a>";
+			}
+		?>
+		</div>
+		</div>
+		</div>
+		</div>
+		</nav>
+
 		<!--content wrapper starts-->
-		<div class="content_wrapper">
-		<form action="register.php" method="post" enctype="multipart/form-data">
-					<h2 align="center">Create an account</h2>
-					<table align="center" width="750">
+		<div class="content_wrapper" align="center">
+		<form action="register.php" method="post" enctype="multipart/form-data" align="center">
+					<table align="center">
 						<tr>
-							<td align="right" style="color: white">Email:</td>
-							<td><input type="text" name="email" required></td>
+							<td align="right" style="color: white">......</td>
+							<td><input placeholder="E-mail"type="text" name="email" required></td>
 						</tr>
 						<tr>
-							<td align="right" style="color: white">Password:</td>
-							<td><input type="password" name="user_passwd" required/></td>
+							<td align="right" style="color: white">.</td>
+							<td><input placeholder="Password" type="password" name="user_passwd" required/></td>
 						</tr>
 						<tr>
 							<td align="right" style="color: white">First Name:</td>
-							<td><input type="text" name="firstname" required/></td>
+							<td><input placeholder="First name" type="text" name="firstname" required/></td>
 						</tr>
 
 						<tr>
 							<td align="right" style="color: white">Surname:</td>
-							<td><input type="text" name="surname" required/></td>
+							<td><input placeholder="Surname" type="text" name="surname" required/></td>
 						</tr>
 						<tr>
 							<td align="right" style="color: white">Profile Photo:</td>
-							<!-- <td><input type="file" name="profilePhoto" required/></td> ADD THIS IN LATER************************-->
-							<td><input type="file" name="profilePhoto"/></td>
+							<!-- <td><input type="file" name="profilePhoto" required/></td> ADD THIS IN LATER************************ -->
+							<td><input placeholder="Profile Photo" type="file" name="profilePhoto"/></td>
 						</tr>
 						<tr>
 							<td align="right" style="color: white">Contact:</td>
-							<td><input type="text" name="PhoneNumber" required/></td>
+							<td><input placeholder="Phone Number" type="text" name="PhoneNumber" required/></td>
 						</tr>
-
-
-					<tr align="right">
-						<td><input type="submit" name="register" value="Create Account" style="margin-left: 70px;"/></td>
-					</tr>
 				</table>
+					<tr align="right">
+						<td><input class="button is-primary" type="submit" name="register" value="Create Account" style="margin-left: -8px; align:center"/></td>
+					</tr>
 		</form>
 		</div>
 		<!--content wrapper ends-->

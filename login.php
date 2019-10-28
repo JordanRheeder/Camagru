@@ -1,98 +1,130 @@
 <?php
-include('/includes/functions.php');
+include('includes/functions.php');
 ini_set("display_errors", true);
 if (session_id() === "") {
   session_start();
 }
-// if (!isset($_SESSION))
-//   {
-//     echo "starting session";
-//     session_start();
-//   }
 ?>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
-	<head>
-		<meta charset="utf-8">
-		<title>Camagru</title>
-		<link rel="stylesheet" href="styles/index.css" media="all" />
+  <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Camagru</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 	</head>
 <body>
-	<div class="main_wrapper">
-		<div class="header_wrapper">
-			<a href="index.php">
-			  <img id="banner" src="images/logom.png">
-			</a>
-		</div>
-		<!--Navigation bar starts-->
-		<div class="menubar">
-			<ul id="menu">
-					<li><a href="index.php">Home</a></li>
-					<li><a href="my_account.php">My Account</a></li>
-					<li><a href="#">PH</a></li>
-			</ul>
-			<div class="dropdown">
-					<button onclick="myFunction()" class="dropbtn">Login - Register</button>
-					<div id="myDropdown" class="dropdown-content">
-					<?php
-					   if(isset($_SESSION['user_email'])) {
-						  echo "<a href='login.php?Logout=TRUE'>Logout</a>";
-						} else {
-						  echo "<a href='login.php'>Login</a>";
-						}
-					  ?>
-					  <a href="register.php">Register</a>
-					  <a href="fml.php">Forgot account-temp-</a>
-					</div>
-				  </div>
-				  <script>
-				  /* When the user clicks on the button,
-				  toggle between hiding and showing the dropdown content */
-				  function myFunction() {
-					document.getElementById("myDropdown").classList.toggle("show");
-				  }
+	<!-- <div class="main_wrapper"> -->
+		<nav class="navbar" role="navigation" aria-label="main navigation">
+		  <div class="navbar-brand">
+		    <a class="navbar-item" href="index2.0.php">
+		      <img src="images/final.gif" width="112px" height="112px">
+		    </a>
 
-				  // Close the dropdown if the user clicks outside of it
-				  window.onclick = function(event) {
-					if (!event.target.matches('.dropbtn')) {
-					  var dropdowns = document.getElementsByClassName("dropdown-content");
-					  var i;
-					  for (i = 0; i < dropdowns.length; i++) {
-						var openDropdown = dropdowns[i];
-						if (openDropdown.classList.contains('show')) {
-						  openDropdown.classList.remove('show');
+		    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+		      <span aria-hidden="true"></span>
+		      <span aria-hidden="true"></span>
+		      <span aria-hidden="true"></span>
+		    </a>
+		  </div>
+
+		  <div id="navbarBasicExample" class="navbar-menu">
+		    <div class="navbar-start">
+		      <a class="navbar-item" href="index.php">
+		        Home
+		      </a>
+
+
+			<?php
+				if(isset($_SESSION['user_email'])) {
+					// echo "<a href='index.php?Logout=TRUE'>Logout</a>";
+					echo "<a class='navbar-item' href='my_account.php'>My Account</a>";
+				}
+				else {
+					echo "";
+				}
+			?>
+
+
+
+
+
+		      <div class="navbar-item has-dropdown is-hoverable">
+		        <a class="navbar-link">
+		          Placeholder
+		        </a>
+
+		        <div class="navbar-dropdown">
+		          <a class="navbar-item">
+		            Placeholder
+		          </a>
+		          <a class="navbar-item">
+		            Placeholder
+		          </a>
+		          <a class="navbar-item">
+		            Placeholder
+		          </a>
+		          <hr class="navbar-divider">
+		          <a class="navbar-item">
+		            Placeholder
+		          </a>
+		        </div>
+		      </div>
+		    </div>
+			    <div class="navbar-end">
+			      <div class="navbar-item">
+			        <div class="buttons">
+			            <?php
+							if(isset($_SESSION['user_email'])) {
+								echo "";
+							}
+							else {
+								echo "<a class='button is-primary' href='register.php'>";
+								echo "<strong>Sign up</strong>";
+								echo "</a>";
+							}
+						?>
+						<?php
+						if(isset($_SESSION['user_email'])) {
+							echo "<a class='button is-light' href='login.php?Logout=TRUE'>Log out</a>";
 						}
-					  }
-					}
-				  }
-				  </script>
-		</div>
+						else {
+								echo "<a class='button is-light' href='login.php'>Log in</a>";
+						}
+						?>
+					</div>
+			      </div>
+			    </div>
+			  </div>
+			</nav>
 		<!--content wrapper starts-->
 		<div class="content_wrapper">
 		<div class="loginForm" align="center">
-	<form method="post" action="">
-		<table width="500" align="center" bgcolor="gray">
-			<tr align="center">
-				<td colspan="4"><h2>Login or Register<h2></td>
-			</tr>
+	<form method="post" action="" align="center">
+		<table align="center" bgcolor="white">
 			<tr>
-				<td align="right"><b>Email: </b></td>
+				<td align="right"></td>
 				<td><input type="text" name="email" placeholder="Enter Email" required/></td>
 			</tr>
 			<tr>
-				<td align="right"><b>Password: </b></td>
+				<td align="right"></td>
 				<td><input type="password" name="pass" placeholder="Enter Password" required/></td>
-			</tr>
-			<tr align="center">
-				<td colspan="3"><input type="submit" name="login" value="login" /></td>
 			</tr>
 
 
 
 		</table>
-		<h2 style="float:center; padding='15px' "><a href="register.php" style="text-decoration:none; color:white">Register Here</a><h2>
+			<tr>
+				<td colspan="3"><input class="button is-primary" type="submit" name="login" value="login"/></td>
+			</tr>
 	</form>
+		<form action="reset.php">
+			<button class="button is-primary">Forgot password?</button>
+		</form>
+				<!-- <button class="button is-primary">Forgot password?</button> -->
 		</div>
-				</div>
+
 		<!--content wrapper ends-->
 		<!--footer starts-->
 		<div id="footer">
@@ -119,13 +151,10 @@ if (session_id() === "") {
 				$passwd = hash('whirlpool', $_POST['pass']);
 
 				//********* Select password and email from the database to check whether it's a match. Then login... *********
-				// $verifySQL = ("SELECT user_passwd, user_email, user_name FROM `users` WHERE user_passwd=:user_passwd AND user_email=:user_email AND user_name=:user_name");
 				$verifySQL = ("SELECT * FROM `users` WHERE user_passwd=:user_passwd AND user_email=:user_email");
 				$verify = $dbh->prepare($verifySQL);
 				$verify->bindParam(':user_email', $email, PDO::PARAM_STR);
 				$verify->bindParam(':user_passwd', $passwd, PDO::PARAM_STR);
-				// $verify->bindParam(':user_name', $, PDO::PARAM_STR);
-				// print_r($verifySQL);
 				$verify->execute();
 				//************************************************************************************************************
 
@@ -133,17 +162,12 @@ if (session_id() === "") {
 				$row = $verify->fetch();
 				$check_email  = $row['user_email'];
 				$check_passwd  = $row['user_passwd'];
-				// $check_passwd  = hash('whirlpool', $row['user_passwd']);
 				$check_userID = $row['user_id'];
 				//**********************************************
 
 				//********* Compare values from DB to input, IF match THEN Login ELSE kick off *********
 
-				// print("email=: $email -> DB-email=: $check_email\npasswd=:$passwd -> DB-passwd=:$check_passwd\n");
-				// print("user_name=:  $user_name\n");
-				// if (($email === $check_email) && (hash('whirlpool',$passwd) === $check_passwd)) {
 				if (($email === $check_email) && ($passwd === $check_passwd)) {
-				// echo "email: ".$email;
 					echo "<script>alert('Logged in');</script>";
 					echo "<script>window.open('login.php', '_self')</script>";
 					$_SESSION['user_email'] = $email;

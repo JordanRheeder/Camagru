@@ -6,7 +6,6 @@
 	}
 	else {
 		$session_id=session_id();
-		// echo ($session_id);
 	}
 	// include("functions/functions.php");
 ?>
@@ -20,14 +19,91 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 	</head>
 <body>
-	<div class="main_wrapper">
-		<div class="header_wrapper">
-			<a href="index.php">
-				<img id="banner" src="images/logom.png">
-			</a>
-		</div>
+	<!-- <div class="main_wrapper"> -->
+		<nav class="navbar" role="navigation" aria-label="main navigation">
+		  <div class="navbar-brand">
+		    <a class="navbar-item" href="index2.0.php">
+		      <img src="images/final.gif" width="112px" height="112px">
+		    </a>
+
+		    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+		      <span aria-hidden="true"></span>
+		      <span aria-hidden="true"></span>
+		      <span aria-hidden="true"></span>
+		    </a>
+		  </div>
+
+		  <div id="navbarBasicExample" class="navbar-menu">
+		    <div class="navbar-start">
+		      <a class="navbar-item" href="index.php">
+		        Home
+		      </a>
+
+
+			<?php
+				if(isset($_SESSION['user_email'])) {
+					// echo "<a href='index.php?Logout=TRUE'>Logout</a>";
+					echo "<a class='navbar-item' href='my_account.php'>My Account</a>";
+				}
+				else {
+					echo "";
+				}
+			?>
+
+
+
+
+
+		      <div class="navbar-item has-dropdown is-hoverable">
+		        <a class="navbar-link">
+		          Placeholder
+		        </a>
+
+		        <div class="navbar-dropdown">
+		          <a class="navbar-item">
+		            Placeholder
+		          </a>
+		          <a class="navbar-item">
+		            Placeholder
+		          </a>
+		          <a class="navbar-item">
+		            Placeholder
+		          </a>
+		          <hr class="navbar-divider">
+		          <a class="navbar-item">
+		            Placeholder
+		          </a>
+		        </div>
+		      </div>
+		    </div>
+			    <div class="navbar-end">
+			      <div class="navbar-item">
+			        <div class="buttons">
+			            <?php
+							if(isset($_SESSION['user_email'])) {
+								echo "";
+							}
+							else {
+								echo "<a class='button is-primary' href='register.php'>";
+								echo "<strong>Sign up</strong>";
+								echo "</a>";
+							}
+						?>
+						<?php
+						if(isset($_SESSION['user_email'])) {
+							echo "<a class='button is-light' href='login.php?Logout=TRUE'>Log out</a>";
+						}
+						else {
+								echo "<a class='button is-light' href='login.php'>Log in</a>";
+						}
+						?>
+					</div>
+			      </div>
+			    </div>
+			  </div>
+			</nav>
 		<!--Navigation bar starts-->
-		<div class="menubar">
+		<!-- <div class="menubar">
 			<ul id="menu">
 					<li><a href="index.php">Home</a></li>
 					<li><a href="my_account.php">My Account</a></li>
@@ -36,14 +112,6 @@
 			<div class="dropdown">
 					<button onclick="myFunction()" class="dropbtn">Login - Register</button>
 					<div id="myDropdown" class="dropdown-content">
-						<?php
-							if(isset($_SESSION['user_email'])) {
-								echo "<a href='index.php?Logout=TRUE'>Logout</a>";
-							}
-							else {
-								echo "<a href='login.php'>Login</a>";
-							}
-						?>
 						<a href="register.php">Register</a>
 						<a href="reset.php">Forgot account-temp-</a>
 					</div>
@@ -68,13 +136,8 @@
 						}
 					}
 				}
-				</script>
+				</script> -->
 		</div>
-		<!--content wrapper starts-->
-		<div class="content_wrapper">
-		  <!-- test; -->
-		</div>
-		<!--content wrapper ends-->
 		<!--footer starts-->
 		<div id="footer">
 			<h2 style="text-align:center; padding-top:30px;">jrheeder</h2>
@@ -87,8 +150,5 @@
 	if ($_GET['Logout'] == 'TRUE')
 	  session_destroy();
 	  echo "<script>window.open('index.php', '_self')</script>";
-	  // echo ("Will kill session");
-	  // print_r($_SESSION);
-	  // echo "<script>alert('Logged out');</script>";
   }
 ?>
