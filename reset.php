@@ -10,14 +10,11 @@
 	}
 	// include("functions/functions.php");
 ?>
-<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Camagru</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+	<link rel="stylesheet" href="styles/index.css" media="all" />
 	</head>
 <body>
 	<div class="main_wrapper">
@@ -36,16 +33,16 @@
 			<div class="dropdown">
 					<button onclick="myFunction()" class="dropbtn">Login - Register</button>
 					<div id="myDropdown" class="dropdown-content">
-						<?php
-							if(isset($_SESSION['user_email'])) {
-								echo "<a href='index.php?Logout=TRUE'>Logout</a>";
-							}
-							else {
-								echo "<a href='login.php'>Login</a>";
-							}
-						?>
-						<a href="register.php">Register</a>
-						<a href="reset.php">Forgot account-temp-</a>
+					  <?php
+						if(isset($_SESSION['user_email'])) {
+						echo "<a href='index.php?Logout=TRUE'>Logout</a>";
+						}
+						else {
+						  echo "<a href='login.php'>Login</a>";
+						}
+					  ?>
+					  <a href="register.php">Register</a>
+					  <a href="reset.php">Forgot account-temp-</a>
 					</div>
 				</div>
 				<script>
@@ -72,7 +69,19 @@
 		</div>
 		<!--content wrapper starts-->
 		<div class="content_wrapper">
-		  <!-- test; -->
+		<!-- test; -->
+			<form action="reset.php" method="post" enctype="multipart/form-data">
+						<h2 align="center">Reset password</h2>
+						<table align="center" width="750">
+							<tr>
+								<td align="right" style="color: white">Email:</td>
+								<td><input type="text" name="email" required></td>
+							</tr>
+						<tr align="right">
+							<td align="right"><input type="submit" name="reset" value="Reset Account" style="margin-left: 70px;"/></td>
+						</tr>
+					</table>
+			</form>
 		</div>
 		<!--content wrapper ends-->
 		<!--footer starts-->
@@ -83,12 +92,28 @@
   </body>
 </html>
 <?php
-  if (isset($_GET['Logout'])) {
-	if ($_GET['Logout'] == 'TRUE')
-	  session_destroy();
-	  echo "<script>window.open('index.php', '_self')</script>";
-	  // echo ("Will kill session");
-	  // print_r($_SESSION);
-	  // echo "<script>alert('Logged out');</script>";
-  }
+	try {
+		include ('includes/functions.php');
+	}
+	catch(PDOException $e) {
+		echo "ERROR: ".$e->getMessage();
+		exit(2);
+	}
+	if (isset($_GET['Logout'])) {
+		if ($_GET['Logout'] == 'TRUE')
+			session_destroy();
+		echo "<script>window.open('index.php', '_self')</script>";
+		// echo ("Will kill session");
+		// print_r($_SESSION);
+		// echo "<script>alert('Logged out');</script>";
+	}
+	if (isset($_POST['reset'])) {
+		// echo "<script>alert('reset');</script>";
+		if (hashResetPassword($_POST['email'])){
+			echo "<script>alert('reset');</script>";
+		}
+		else {
+			echo "<script>alert('nah');</script>";
+		}
+	}
 ?>

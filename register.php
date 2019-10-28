@@ -34,7 +34,7 @@ session_start();
 						}
 					  ?>
 					  <a href="register.php">Register</a>
-					  <a href="fml.php">Forgot account-temp-</a>
+					  <a href="reset.php">Forgot account-temp-</a>
 					</div>
 				  </div>
 				  <script>
@@ -174,11 +174,8 @@ session_start();
 
 	if (isset($_GET['token'])) {
 		$token = $_GET['token'];
-		// $verified = 1;
 		try {
-			// echo "<script>alert('tokes');</script>";
 			if (verify_token($token)) {
-				// echo "<script>alert('Updating');</script>";
 				$verifyToken = ("SELECT * FROM `users`");
 				$verifyToken = $dbh->prepare($verifyToken);
 				$verifyToken->execute();
