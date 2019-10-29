@@ -61,6 +61,28 @@
 		return (1);
 	}
 
+	function resetValidEmail($email) {
+		include_once('config/connect.php');
+		ini_set("display_errors", TRUE);
+		$SelectSQL = ("SELECT * from `users` WHERE user_email=:user_email");
+		$select = $dbh->prepare($SelectSQL);
+		$select->bindParam(':user_email', $email, PDO::PARAM_STR);
+		$select->execute();
+		$row = $select->fetch();
+		$valid = $row['verified'];
+		if ($valid == 1) {
+			echo "<script>alert('1')</script>";
+		}
+		else
+			echo "<script>alert('0')</script>";
+		$query = ("UPDATE `users` SET verified=:zero WHERE user_email='$email'");
+		$query = $dbh->prepare($query);
+		$zero = '0';
+		$query->bindParam(':zero', $zero, PDO::PARAM_STR);
+		$query->execute();
+		echo "executed";
+		return (1);
+	}
 	function validate_email($check_mail) {
 		if (!filter_var($check_mail, FILTER_VALIDATE_EMAIL))
 			return (0);
