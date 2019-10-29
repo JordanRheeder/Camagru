@@ -135,6 +135,59 @@
 					<section class="modal-card-body">
 						<!-- Content ... -->
 						<!-- Insert forms -->
+						<div class="field">
+							<div class="control">
+								<?php
+									include ('config/connect.php');
+									// We need to select the users profile picture from DB.
+									// ***************************************************
+									$queryUser = ("SELECT * from `users` WHERE user_email=:user_email");
+									$queryU = $dbh->prepare($queryUser);
+									$queryU->bindParam(':user_email', $user_email, PDO::PARAM_STR);
+									$queryU->execute();
+									$row = $queryU->fetch();
+									$user_email = $row['user_email'];
+									$user_img = $row['user_image'];
+									$user_surname = $row['user_surname'];
+									$user_contact = $row['user_contact'];
+									$user_img = $row['user_image'];
+									$user_name = $row['user_firstname'];
+									if (empty($user_email)) {
+										echo "<img class='is-rounded' src='https://bulma.io/images/placeholders/128x128.png'>";
+									}
+									else {
+										echo "<input class='input is-primary' type='text' name='email' placeholder='Email' value='$user_email'/>";
+									}
+
+									if (empty($user_name)) {
+										echo "<input class='input is-primary' type='text' name='FirstName' placeholder='First name'/>";
+									}
+									else {
+										echo "<input class='input is-primary' type='text' name='FirstName' placeholder='First name' value='$user_name'/>";
+									}
+
+									if (empty($user_surname)) {
+										echo "<input class='input is-primary' type='text' name='Surname' placeholder='Surname'/>";
+									}
+									else {
+										echo "<input class='input is-primary' type='text' name='Surname' placeholder='Surname' value='$user_surname'/>";
+									}
+									if (empty($user_contact)) {
+										echo "<input class='input is-primary' type='text' name='Contact' placeholder='Contact'/>";
+									}
+									else {
+										echo "<input class='input is-primary' type='text' name='Contact' placeholder='Contact' value='$user_contact'/>";
+									}
+									if (empty($user_img)) {
+										echo "<input class='input is-primary' type='file' name='email' placeholder='Profile Photo'/>";
+									}
+									else {
+										echo "<input class='input is-primary' type='file' name='email' placeholder='Profile Photo' value='$user_img'/>";
+									}
+
+								?>
+							</div>
+						</div>
 					</section>
 					<footer class="modal-card-foot">
 						<button class="button is-success">Save changes</button>
