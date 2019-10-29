@@ -21,25 +21,21 @@
 <body>
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
-		  <div class="navbar-brand">
-		    <a class="navbar-item" href="index2.0.php">
-		      <img src="images/final.gif" width="112px" height="112px">
-		    </a>
-
-		    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-		      <span aria-hidden="true"></span>
-		      <span aria-hidden="true"></span>
-		      <span aria-hidden="true"></span>
-		    </a>
-		  </div>
-
-		  <div id="navbarBasicExample" class="navbar-menu">
-		    <div class="navbar-start">
-		      <a class="navbar-item" href="index.php">
-		        Home
-		      </a>
-
-
+			<div class="navbar-brand">
+				<a class="navbar-item" href="index2.0.php">
+					<img src="images/final.gif" width="112px" height="112px">
+				</a>
+				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+			</div>
+			<div id="navbarBasicExample" class="navbar-menu">
+				<div class="navbar-start">
+					<a class="navbar-item" href="index.php">
+						Home
+					</a>
 			<?php
 				if(isset($_SESSION['user_email'])) {
 					// echo "<a href='index.php?Logout=TRUE'>Logout</a>";
@@ -49,37 +45,32 @@
 					echo "";
 				}
 			?>
+			<div class="navbar-item has-dropdown is-hoverable">
+				<a class="navbar-link">
+					Placeholder
+				</a>
 
-
-
-
-
-		      <div class="navbar-item has-dropdown is-hoverable">
-		        <a class="navbar-link">
-		          Placeholder
-		        </a>
-
-		        <div class="navbar-dropdown">
-		          <a class="navbar-item">
-		            Placeholder
-		          </a>
-		          <a class="navbar-item">
-		            Placeholder
-		          </a>
-		          <a class="navbar-item">
-		            Placeholder
-		          </a>
-		          <hr class="navbar-divider">
-		          <a class="navbar-item">
-		            Placeholder
-		          </a>
-		        </div>
-		      </div>
-		    </div>
-			    <div class="navbar-end">
-			      <div class="navbar-item">
-			        <div class="buttons">
-			            <?php
+				<div class="navbar-dropdown">
+					<a class="navbar-item">
+						Placeholder
+					</a>
+					<a class="navbar-item">
+						Placeholder
+					</a>
+					<a class="navbar-item">
+						Placeholder
+					</a>
+					<hr class="navbar-divider">
+						<a class="navbar-item">
+							Placeholder
+						</a>
+				</div>
+			</div>
+		</div>
+			<div class="navbar-end">
+				<div class="navbar-item">
+					<div class="buttons">
+						<?php
 							if(isset($_SESSION['user_email'])) {
 								echo "";
 							}
@@ -98,45 +89,10 @@
 						}
 						?>
 					</div>
-			      </div>
-			    </div>
-			  </div>
-			</nav>
-		<!--Navigation bar starts-->
-		<!-- <div class="menubar">
-			<ul id="menu">
-					<li><a href="index.php">Home</a></li>
-					<li><a href="my_account.php">My Account</a></li>
-					<li><a href="#">PH</a></li>
-			</ul>
-			<div class="dropdown">
-					<button onclick="myFunction()" class="dropbtn">Login - Register</button>
-					<div id="myDropdown" class="dropdown-content">
-						<a href="register.php">Register</a>
-						<a href="reset.php">Forgot account-temp-</a>
-					</div>
 				</div>
-				<script>
-				  /* When the user clicks on the button,
-				  toggle between hiding and showing the dropdown content */
-				function myFunction() {
-					document.getElementById("myDropdown").classList.toggle("show");
-				}
-
-				  // Close the dropdown if the user clicks outside of it
-				window.onclick = function(event) {
-					if (!event.target.matches('.dropbtn')) {
-						var dropdowns = document.getElementsByClassName("dropdown-content");
-						var i;
-						for (i = 0; i < dropdowns.length; i++) {
-							var openDropdown = dropdowns[i];
-							if (openDropdown.classList.contains('show')) {
-								openDropdown.classList.remove('show');
-							}
-						}
-					}
-				}
-				</script> -->
+			</div>
+			</div>
+		</nav>
 		</div>
 		<!--footer starts-->
 		<div id="footer">
