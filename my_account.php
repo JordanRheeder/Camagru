@@ -139,6 +139,7 @@
 							<div class="control">
 								<?php
 									include ('config/connect.php');
+									ini_set("display_errors", TRUE);
 									// We need to select the users profile picture from DB.
 									// ***************************************************
 									$queryUser = ("SELECT * from `users` WHERE user_email=:user_email");
@@ -156,33 +157,57 @@
 										echo "<img class='is-rounded' src='https://bulma.io/images/placeholders/128x128.png'>";
 									}
 									else {
-										echo "<input class='input is-primary' type='text' name='email' placeholder='Email' value='$user_email'/>";
-									}
+										echo "<label for='email'>Profile Picture</label>";
+										echo "<form action='' method='post'>";
+										echo "<input class='input is-primary' id='email' type='text' name='email' placeholder='Email' value='$user_email'/>";
+										echo "<input class='button is-primary' type='submit' name='UpdateEmail' value='Update Email'/>";
+										echo "</form>";
 
+										if (isset($_POST['UpdateEmail'])) {
+											$newEmail = $_POST['email'];
+
+											$updateUser = ("UPDATE `users` SET user_email=:user_email WHERE user_email='$user_email'");
+											$queryEmail = $dbh->prepare($updateUser);
+											$queryEmail->bindParam('user_email', $newEmail, PDO::PARAM_STR);
+											$queryEmail->execute();
+
+											if(resetValidEmail($user_email)) {
+											echo "<script>window.open('my_account.php', _self)</script>";
+											echo "<script>alert('hello')</script>";
+											echo "<script>alert('updatign')</script>";
+											echo "baby";
+										}
+										}
+
+									}
 									if (empty($user_name)) {
 										echo "<input class='input is-primary' type='text' name='FirstName' placeholder='First name'/>";
 									}
 									else {
-										echo "<input class='input is-primary' type='text' name='FirstName' placeholder='First name' value='$user_name'/>";
+										echo "<label for='FirstName'>First Name</label>";
+										echo "<input class='input is-primary' id='FirstName' type='text' name='FirstName' placeholder='First name' value='$user_name'/>";
 									}
 
 									if (empty($user_surname)) {
 										echo "<input class='input is-primary' type='text' name='Surname' placeholder='Surname'/>";
 									}
 									else {
-										echo "<input class='input is-primary' type='text' name='Surname' placeholder='Surname' value='$user_surname'/>";
+										echo "<label for='Surname'>Surname</label>";
+										echo "<input class='input is-primary' id='Surname' type='text' name='Surname' placeholder='Surname' value='$user_surname'/>";
 									}
 									if (empty($user_contact)) {
 										echo "<input class='input is-primary' type='text' name='Contact' placeholder='Contact'/>";
 									}
 									else {
-										echo "<input class='input is-primary' type='text' name='Contact' placeholder='Contact' value='$user_contact'/>";
+										echo "<label for='Contact'>Contact</label>";
+										echo "<input class='input is-primary' id='Contact' type='text' name='Contact' placeholder='Contact' value='$user_contact'/>";
 									}
 									if (empty($user_img)) {
 										echo "<input class='input is-primary' type='file' name='email' placeholder='Profile Photo'/>";
 									}
 									else {
-										echo "<input class='input is-primary' type='file' name='email' placeholder='Profile Photo' value='$user_img'/>";
+										echo "<label for='img'>Click to edit profile picture</label>";
+										echo "<input class='input is-primary' type='file' name='email' id='img' placeholder='Profile Photo' value='$user_img'/>";
 									}
 
 								?>
