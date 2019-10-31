@@ -62,27 +62,28 @@
 	}
 
 	function resetValidEmail($email) {
-		include_once('config/connect.php');
-		ini_set("display_errors", TRUE);
-		$SelectSQL = ("SELECT * from `users` WHERE user_email=:user_email");
-		$select = $dbh->prepare($SelectSQL);
-		$select->bindParam(':user_email', $email, PDO::PARAM_STR);
-		$select->execute();
-		$row = $select->fetch();
+		// echo "<script>alert('333');</script>";
+		include_once('../config/connect.php');
+		// ini_set("display_errors", TRUE);
+		$SelectSQL = ("SELECT * FROM `users` WHERE user_email=':Email'");
+		// echo "<script>alert('123');</script>";
+		// echo "<script>alert('333');</script>";
+		$SelectSQL = $dbh->prepare($SelectSQL);
+		echo "<script>alert('123');</script>";
+		$SelectSQL->bindParam(':Email', $email, PDO::PARAM_STR);
+		// echo "<script>alert('333');</script>";
+		$SelectSQL->execute();
+		$row = $SelectSQL->fetch();
+		echo "<script>alert('123');</script>";
 		$valid = $row['verified'];
-		if ($valid == 1) {
-			echo "<script>alert('1')</script>";
-		}
-		else
-			echo "<script>alert('0')</script>";
-		$query = ("UPDATE `users` SET verified=:zero WHERE user_email='$email'");
+		echo "<script>alert('$valid');</script>";
+		echo "<script>alert('1');</script>";
+		$query = ("UPDATE `users` SET verified='0' WHERE user_email='$email'");
 		$query = $dbh->prepare($query);
-		$zero = '0';
-		$query->bindParam(':zero', $zero, PDO::PARAM_STR);
 		$query->execute();
-		echo "executed";
 		return (1);
 	}
+
 	function validate_email($check_mail) {
 		if (!filter_var($check_mail, FILTER_VALIDATE_EMAIL))
 			return (0);
