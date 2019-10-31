@@ -47,7 +47,7 @@
 		$query->bindParam(':newHash', $newToken, PDO::PARAM_STR);
 		$query->execute();
 		$subject = "Account reset for Camagru";
-		$message = "Good day, $email here is your reset password link:\n \t http://localhost:8080/Camagru/new.php?ID=$newToken";
+		$message = "Good day, $email here is your reset password link:\n \t http://localhost/Camagru/new.php?ID=$newToken";
 		$headers = "From: jrheeder@student.wethinkcode.co.za";
 		mail($email,$subject,$message,$headers);
 		return (1);
@@ -55,32 +55,32 @@
 
 	function mailVerifCode($email, $token, $firstname) {
 		$subject = "Account verification for Camagru";
-		$message = "Good day, $firstname here is your verfication link:\n \t http://localhost:8080/Camagru/register.php?token=$token";
+		$message = "Good day, $firstname here is your verfication link:\n \t http://localhost/Camagru/register.php?token=$token";
 		$headers = "From: jrheeder@student.wethinkcode.co.za";
 		mail($email,$subject,$message,$headers);
 		return (1);
 	}
 
-	function resetValidEmail($email) {
-		// echo "<script>alert('333');</script>";
-		include_once('../config/connect.php');
-		// ini_set("display_errors", TRUE);
-		$SelectSQL = ("SELECT * FROM `users` WHERE user_email=':Email'");
-		// echo "<script>alert('123');</script>";
-		// echo "<script>alert('333');</script>";
+	function resetValidEmail($old_email, $newEmail) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		$SelectSQL = ("SELECT * FROM `users` WHERE user_email=:Email");
 		$SelectSQL = $dbh->prepare($SelectSQL);
-		echo "<script>alert('123');</script>";
-		$SelectSQL->bindParam(':Email', $email, PDO::PARAM_STR);
-		// echo "<script>alert('333');</script>";
+		$SelectSQL->bindParam(':Email', $old_email, PDO::PARAM_STR);
 		$SelectSQL->execute();
 		$row = $SelectSQL->fetch();
-		echo "<script>alert('123');</script>";
-		$valid = $row['verified'];
-		echo "<script>alert('$valid');</script>";
-		echo "<script>alert('1');</script>";
-		$query = ("UPDATE `users` SET verified='0' WHERE user_email='$email'");
+		// $valid = $row['token'];
+		// need to update token and then send a verification code.
+		$firstname = $row['user_firstname'];
+		$timestamp = time();
+		// $hashed = hash('md5', $email);
+		$newToken = hash('md5', $newEmail.$timestamp);
+		// echo $newToken;
+		$query = ("UPDATE `users` SET user_email='$newEmail', token='$newToken', verified='0' WHERE user_email='$old_email'");
 		$query = $dbh->prepare($query);
 		$query->execute();
+		mailVerifCode($newEmail, $newToken, $firstname);
+
 		return (1);
 	}
 
@@ -121,5 +121,19 @@
 				exit(2);
 			}
 		}
+
+	function newPass($oldPass, $newPass, $email) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		// $SelectSQL = ("SELECT * FROM `users` WHERE user_email=:email");
+		// $SelectSQL = $dbh->prepare($SelectSQL);
+		// $SelectSQL->bindParam(':email', $email, PDO::PARAM_STR);
+		// $SelectSQL->execute();
+		// $row = $SelectSQL->fetch();
+		$query = ("UPDATE `users` SET user_passwd='$newPass' WHERE user_email='$email'");
+		$query = $dbh->prepare($query);
+		$query->execute();
+		return (1);
+	}
 
 ?>
