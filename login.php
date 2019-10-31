@@ -18,7 +18,7 @@ if (session_id() === "") {
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 		  <div class="navbar-brand">
-		    <a class="navbar-item" href="index2.0.php">
+		    <a class="navbar-item" href="index.php">
 		      <img src="images/final.gif" width="112px" height="112px">
 		    </a>
 
@@ -45,11 +45,6 @@ if (session_id() === "") {
 					echo "";
 				}
 			?>
-
-
-
-
-
 		      <div class="navbar-item has-dropdown is-hoverable">
 		        <a class="navbar-link">
 		          Placeholder
@@ -111,9 +106,6 @@ if (session_id() === "") {
 				<td align="right"></td>
 				<td><input type="password" name="pass" placeholder="Enter Password" required/></td>
 			</tr>
-
-
-
 		</table>
 			<tr>
 				<td colspan="3"><input class="button is-primary" type="submit" name="login" value="login"/></td>
@@ -131,6 +123,28 @@ if (session_id() === "") {
 			<h2 style="text-align:center; padding-top:30px;">jrheeder</h2>
 		</div>
 		<!--footer ends-->
+		<!-- Scripts -->
+		<script>document.addEventListener('DOMContentLoaded', () => {
+			// Get all "navbar-burger" elements
+			const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+			// Check if there are any navbar burgers
+			if ($navbarBurgers.length > 0) {
+				// Add a click event on each of them
+				$navbarBurgers.forEach( el => {
+					el.addEventListener('click', () => {
+					// Get the target from the "data-target" attribute
+						const target = el.dataset.target;
+						const $target = document.getElementById(target);
+						// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+						el.classList.toggle('is-active');
+						$target.classList.toggle('is-active');
+
+					});
+				});
+			}
+		});
+		</script>
+		<!-- Scripts end -->
   </body>
 </html>
 
@@ -169,7 +183,7 @@ if (session_id() === "") {
 
 				if (($email === $check_email) && ($passwd === $check_passwd)) {
 					echo "<script>alert('Logged in');</script>";
-					echo "<script>window.open('login.php', '_self')</script>";
+					echo "<script>window.open('index.php', '_self')</script>";
 					$_SESSION['user_email'] = $email;
 				}
 				else {

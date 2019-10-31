@@ -15,7 +15,7 @@
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="index2.0.php">
+				<a class="navbar-item" href="index.php">
 					<img src="images/final.gif" width="112px" height="112px">
 				</a>
 				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -87,9 +87,11 @@
 			</div>
 		</nav>
 		<div class="content_wrapper">
-				<h1 style="text-align:left; padding-top:30px;">Hello
+				<h1 style="text-align:left; padding-top:30px;">
 					<?php
-						$user_email = $_SESSION['user_email'];
+						if(!$user_email = $_SESSION['user_email']) {
+							echo "<script>window.open('index.php', '_self')</script>";
+						}
 						// echo "user: $user_email";
 					?>
 				</h1>
@@ -121,127 +123,37 @@
 
 		</div>
 		<br/>
-		<!-- <div class="buttons" style="margin-top:10px; margin-left: 50px;"> -->
-		<div class="buttons">
-			<!-- <button class="button is-primary">Edit account</button> -->
-			<button class="button is-primary modal-button" data-target="#myModal" aria-haspopup="true" style="margin-top:10px; margin-left: 50px;">Edit Account</button>
-			<div class="modal" id="myModal">
-				<div class="modal-background"></div>
-				<div class="modal-card">
-					<header class="modal-card-head">
-						<p class="modal-card-title">Edit Account</p>
-						<button class="delete" aria-label="close"></button>
-					</header>
-					<section class="modal-card-body">
-						<!-- Content ... -->
-						<!-- Insert forms -->
-						<div class="field">
-							<div class="control">
-								<?php
-									include ('config/connect.php');
-									ini_set("display_errors", TRUE);
-									// We need to select the users profile picture from DB.
-									// ***************************************************
-									$queryUser = ("SELECT * from `users` WHERE user_email=:user_email");
-									$queryU = $dbh->prepare($queryUser);
-									$queryU->bindParam(':user_email', $user_email, PDO::PARAM_STR);
-									$queryU->execute();
-									$row = $queryU->fetch();
-									$user_email = $row['user_email'];
-									$user_img = $row['user_image'];
-									$user_surname = $row['user_surname'];
-									$user_contact = $row['user_contact'];
-									$user_img = $row['user_image'];
-									$user_name = $row['user_firstname'];
-									if (empty($user_email)) {
-										echo "<img class='is-rounded' src='https://bulma.io/images/placeholders/128x128.png'>";
-									}
-									else {
-										echo "<label for='email'>Profile Picture</label>";
-										echo "<form action='' method='post'>";
-										echo "<input class='input is-primary' id='email' type='text' name='email' placeholder='Email' value='$user_email'/>";
-										echo "<input class='button is-primary' type='submit' name='UpdateEmail' value='Update Email'/>";
-										echo "</form>";
-
-										if (isset($_POST['UpdateEmail'])) {
-											$newEmail = $_POST['email'];
-
-											$updateUser = ("UPDATE `users` SET user_email=:user_email WHERE user_email='$user_email'");
-											$queryEmail = $dbh->prepare($updateUser);
-											$queryEmail->bindParam('user_email', $newEmail, PDO::PARAM_STR);
-											$queryEmail->execute();
-
-											if(resetValidEmail($user_email)) {
-											echo "<script>window.open('my_account.php', _self)</script>";
-											echo "<script>alert('hello')</script>";
-											echo "<script>alert('updatign')</script>";
-											echo "baby";
-										}
-										}
-
-									}
-									if (empty($user_name)) {
-										echo "<input class='input is-primary' type='text' name='FirstName' placeholder='First name'/>";
-									}
-									else {
-										echo "<label for='FirstName'>First Name</label>";
-										echo "<input class='input is-primary' id='FirstName' type='text' name='FirstName' placeholder='First name' value='$user_name'/>";
-									}
-
-									if (empty($user_surname)) {
-										echo "<input class='input is-primary' type='text' name='Surname' placeholder='Surname'/>";
-									}
-									else {
-										echo "<label for='Surname'>Surname</label>";
-										echo "<input class='input is-primary' id='Surname' type='text' name='Surname' placeholder='Surname' value='$user_surname'/>";
-									}
-									if (empty($user_contact)) {
-										echo "<input class='input is-primary' type='text' name='Contact' placeholder='Contact'/>";
-									}
-									else {
-										echo "<label for='Contact'>Contact</label>";
-										echo "<input class='input is-primary' id='Contact' type='text' name='Contact' placeholder='Contact' value='$user_contact'/>";
-									}
-									if (empty($user_img)) {
-										echo "<input class='input is-primary' type='file' name='email' placeholder='Profile Photo'/>";
-									}
-									else {
-										echo "<label for='img'>Click to edit profile picture</label>";
-										echo "<input class='input is-primary' type='file' name='email' id='img' placeholder='Profile Photo' value='$user_img'/>";
-									}
-
-								?>
-							</div>
-						</div>
-					</section>
-					<footer class="modal-card-foot">
-						<button class="button is-success">Save changes</button>
-						<!-- <button class="button">Cancel</button> -->
-					</footer>
-				</div>
-				</div>
-				<script>
-			document.querySelectorAll('.modal-button').forEach(function(el) {
-				el.addEventListener('click', function() {
-					var target = document.querySelector(el.getAttribute('data-target'));
-
-					target.classList.add('is-active');
-						target.querySelector('.button').addEventListener('click',   function() {
-							target.classList.remove('is-active');
-						});
-						target.querySelector('.delete').addEventListener('click',   function() {
-							target.classList.remove('is-active');
-						});
-				});
-			});
-			</script>
+		<div class="buttons" style="margin-top:10px; margin-left: 50px;">
+			<?php echo "<a class='button is-primary' href='DetailsUpdate.php'>Edit Account</a>"; ?>
 		</div>
-		<!--content wrapper ends-->
-		<!--footer starts-->
-		<div id="footer">
-			<h2 style="text-align:center; padding-top:30px;">jrheeder</h2>
+		<div align="center" style="margin-top:-200px; margin-left: center position:fixed">
+			test;
 		</div>
+
 		<!--footer ends-->
+
+		<!-- Scripts -->
+		<script>document.addEventListener('DOMContentLoaded', () => {
+			// Get all "navbar-burger" elements
+			const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+			// Check if there are any navbar burgers
+			if ($navbarBurgers.length > 0) {
+				// Add a click event on each of them
+				$navbarBurgers.forEach( el => {
+					el.addEventListener('click', () => {
+					// Get the target from the "data-target" attribute
+						const target = el.dataset.target;
+						const $target = document.getElementById(target);
+						// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+						el.classList.toggle('is-active');
+						$target.classList.toggle('is-active');
+
+					});
+				});
+			}
+		});
+		</script>
+		<!-- Scripts end -->
 </body>
 <?php
 	try {
