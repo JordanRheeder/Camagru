@@ -15,7 +15,7 @@
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="index2.0.php">
+				<a class="navbar-item" href="index.php">
 					<img src="images/final.gif" width="112px" height="112px">
 				</a>
 				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -88,39 +88,64 @@
 		</nav>
 		<br/>
 		<div class="content_wrapper" align="center">
-		<form action="my_account.php" method="post" enctype="multipart/form-data" align="center">
+		<form action="" method="post" enctype="multipart/form-data" align="center">
 				<table align='center'>
 				<tr>
-					<td align='right' style='color: white'>......</td>
+					<td align='center' style='color: white'>......</td>
 					<td><input placeholder='E-mail' type='text' name='user_email' ></td>
+					<td><input class='button is-primary' type='submit' name='updateEMAIL' value='Change Email' style='margin-left: 3px; margin-top: 0px; height: 50%; width: 120px; font-size: 10px; align:center'/></td>
 				</tr>
-				<tr>
-					<td align='right' style='color: white'>.</td>
-					<td><input placeholder='Password' type='password' name='user_passwd' /></td>
-				</tr>
-				<tr>
-					<td align='right' style='color: white'>First Name:</td>
-					<td><input placeholder='First name' type='text' name='user_firstname' /></td>
-				</tr>
-
-				<tr>
-					<td align='right' style='color: white'>Surname:</td>
-					<td><input placeholder='Surname' type='text' name='user_surname' /></td>
-				</tr>
-				<tr>
-					<td align='right' style='color: white'>Profile Photo:</td>
-					<!-- <td><input type='file' name='profilePhoto' required/></td> ADD THIS IN LATER************************ -->
-					<td><input placeholder='Profile Photo' type='file' name='user_photo'/></td>
-				</tr>
-				<tr>
-					<td align='right' style='color: white'>Contact:</td>
-					<td><input placeholder='Phone Number' type='text' name='user_contact' /></td>
-				</tr>
-		</table>
-			<tr align='right'>
-				<td><input class='button is-primary' type='submit' name='update' value='Update Account' style='margin-left: -8px; align:center'/></td>
-			</tr>
+				</table>
 		</form>
+
+		<form action="" method="post" enctype="multipart/form-data" align="center">
+				<table align='center'>
+				<tr>
+					<td align='center' style='color: white'>......</td>
+					<td><input placeholder='Password' type='password' name='user_password' ></td>
+					<td><input class='button is-primary' type='submit' name='updatePASSWORD' value='Change Password' style='margin-left: 3px; margin-top: 0px; width: 120px;  height: 50%; font-size: 10px; align:center'/></td>
+				</tr>
+				</table>
+		</form>
+
+		<form action="" method="post" enctype="multipart/form-data" align="center">
+				<table align='center'>
+				<tr>
+					<td align='center' style='color: white'>......</td>
+					<td><input placeholder='First Name' type='text' name='user_firstname' ></td>
+					<td><input class='button is-primary' type='submit' name='updateNAME' value='Update First Name' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+				</tr>
+				</table>
+		</form>
+
+		<form action="" method="post" enctype="multipart/form-data" align="center">
+				<table align='center'>
+				<tr>
+					<td align='center' style='color: white'>......</td>
+					<td><input placeholder='Surname' type='text' name='user_surname' ></td>
+					<td><input class='button is-primary' type='submit' name='updateSURNAME' value='Update Surname' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+				</tr>
+				</table>
+		</form>
+		<form action="" method="post" enctype="multipart/form-data" align="center">
+				<table align='center'>
+				<tr>
+					<td align='center' style='color: white'>......</td>
+					<td><input placeholder='Contact' type='text' name='user_contact' ></td>
+					<td><input class='button is-primary' type='submit' name='updateCONTACT' value='Update Contact' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+				</tr>
+				</table>
+		</form>
+		<form action="" method="post" enctype="multipart/form-data" align="center">
+				<table align='center'>
+				<tr>
+					<td align='center' style='color: white'>......</td>
+					<td><input placeholder='ProfilePhoto' type='file' name='user_photo' ></td>
+					<td><input class='button is-primary' type='submit' name='updatePHOTO' value='Update Email' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+				</tr>
+				</table>
+		</form>
+
 		</div>
 	<?php
 		include_once('config/connect.php');
@@ -130,7 +155,7 @@
 		// ***************************************************
 		$queryUser = ("SELECT * FROM `users` WHERE user_email=:user_email");
 		$queryU = $dbh->prepare($queryUser);
-		$user_email = $_SESSION['user_email'];
+		$user_email = $_SESSION['user_email']; // old email
 		$queryU->bindParam(':user_email', $user_email, PDO::PARAM_STR);
 		$queryU->execute();
 		$row = $queryU->fetch();
@@ -140,11 +165,83 @@
 		$user_contact = $row['user_contact'];
 		$user_img = $row['user_image'];
 		$user_name = $row['user_firstname'];
-		print_r($row);
+		$old_pass = $row['user_passwd'];
+		if (isset($_POST['updateEMAIL'])) {
+			$newEmail = $_POST['user_email'];
+			if (validate_email($newEmail) === 1)
+				echo "";
+			else {
+				echo "<script>alert('Please enter a valid e-mail.');</script>";
+				exit(2);
+			}
+			// NEW EMAIL FUNCTION ++ RESET VALID EMAIL;
+			resetValidEmail($user_email, $newEmail);
+			session_destroy();
+			echo "<script>alert('Please re-validate your account and log back in.');</script>";
+			echo "<script>window.open('index.php', '_self')</script>";
+		}
+		else if (isset($_POST['updatePASSWORD'])) {
+			// before we hash let's check strength +++++++ apply this to register form
+			$test = $_POST['user_password'];
+			// if (testStrength($test) == 1) {
+			//	do nothing
+			//}
+			// else {
+			// alert(retry)
+			//}
+			$newPass = hash('whirlpool', $_POST['user_password']);
+			// --------pass $newpwd to function--------
+			newPass($old_pass, $newPass, $user_email);
+			echo $newPass;
+			echo "\n\t";
+			echo $old_pass;
+		}
+		else if (isset($_POST['updateNAME'])) {
+			$newNAME = $_POST['user_firstname'];
+			// CALL FUNCTION + PASS $newNAME;
+			echo $newNAME;
+		}
+		else if (isset($_POST['updateSURNAME'])) {
+			$newSNAME = $_POST['user_surname'];
+			// CALL FUNCTION + PASS $newSNAME;
+			echo $newSNAME;
+		}
+		else if (isset($_POST['updateCONTACT'])) {
+			$newCONT = $_POST['user_contact'];
+			// SAB4
+			echo $newCONT;
+		}
+		else if (isset($_POST['updatePHOTO'])) {
+			$newPP = $_POST['user_photo'];
+			// SAB4
+			echo $newPP;
+		}
 
 		// resetValidEmail()
 		?>
 		<!--footer ends-->
+		<!-- Scripts -->
+		<script>document.addEventListener('DOMContentLoaded', () => {
+			// Get all "navbar-burger" elements
+			const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+			// Check if there are any navbar burgers
+			if ($navbarBurgers.length > 0) {
+				// Add a click event on each of them
+				$navbarBurgers.forEach( el => {
+					el.addEventListener('click', () => {
+					// Get the target from the "data-target" attribute
+						const target = el.dataset.target;
+						const $target = document.getElementById(target);
+						// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+						el.classList.toggle('is-active');
+						$target.classList.toggle('is-active');
+
+					});
+				});
+			}
+		});
+		</script>
+		<!-- Scripts end -->
 </body>
 <?php
 	try {
