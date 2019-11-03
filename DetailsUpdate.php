@@ -140,8 +140,8 @@
 				<table align='center'>
 				<tr>
 					<td align='center' style='color: white'>......</td>
-					<td><input placeholder='ProfilePhoto' type='file' name='user_photo' ></td>
-					<td><input class='button is-primary' type='submit' name='updatePHOTO' value='Update Email' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+					<td><input placeholder='ProfilePhoto' type='file' name='user_IMG' style="margin-left: -106px;"/></td>
+					<td><input class='button is-primary' type='submit' name='updatePHOTO' value='Update Profile Photo' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
 				</tr>
 				</table>
 		</form>
@@ -160,11 +160,12 @@
 		$queryU->execute();
 		$row = $queryU->fetch();
 		$user_email = $row['user_email'];
-		$user_img = $row['user_image'];
-		$user_surname = $row['user_surname'];
-		$user_contact = $row['user_contact'];
-		$user_img = $row['user_image'];
-		$user_name = $row['user_firstname'];
+		$old_img = $row['user_image'];
+		// echo $old_img;
+		$old_surname = $row['user_surname'];
+		$old_contact = $row['user_contact'];
+		// $old_img = $row['user_image'];
+		$old_name = $row['user_firstname'];
 		$old_pass = $row['user_passwd'];
 		if (isset($_POST['updateEMAIL'])) {
 			$newEmail = $_POST['user_email'];
@@ -181,43 +182,30 @@
 			echo "<script>window.open('index.php', '_self')</script>";
 		}
 		else if (isset($_POST['updatePASSWORD'])) {
-			// before we hash let's check strength +++++++ apply this to register form
 			$test = $_POST['user_password'];
-			// if (testStrength($test) == 1) {
-			//	do nothing
-			//}
-			// else {
-			// alert(retry)
-			//}
-			$newPass = hash('whirlpool', $_POST['user_password']);
-			// --------pass $newpwd to function--------
-			newPass($old_pass, $newPass, $user_email);
-			echo $newPass;
-			echo "\n\t";
-			echo $old_pass;
+			$new_pass = hash('whirlpool', $_POST['user_password']);
+			newPass($old_pass, $new_pass, $user_email);
 		}
 		else if (isset($_POST['updateNAME'])) {
-			$newNAME = $_POST['user_firstname'];
-			// CALL FUNCTION + PASS $newNAME;
-			echo $newNAME;
+			$new_name = $_POST['user_firstname'];
+			newFName($old_name, $new_name, $user_email);
 		}
 		else if (isset($_POST['updateSURNAME'])) {
-			$newSNAME = $_POST['user_surname'];
-			// CALL FUNCTION + PASS $newSNAME;
-			echo $newSNAME;
+			$new_surname = $_POST['user_surname'];
+			newSurname($old_surname, $new_surname, $user_email);
 		}
 		else if (isset($_POST['updateCONTACT'])) {
-			$newCONT = $_POST['user_contact'];
-			// SAB4
-			echo $newCONT;
+			$new_contact = $_POST['user_contact'];
+			newContact($old_contact, $new_contact, $user_email);
 		}
 		else if (isset($_POST['updatePHOTO'])) {
-			$newPP = $_POST['user_photo'];
-			// SAB4
-			echo $newPP;
+			$new_img = $_FILES['user_IMG']['name'];
+			$img_tmp = $_FILES['user_IMG']['tmp_name'];
+			move_uploaded_file($_FILES['user_IMG']['tmp_name'], "users/user_images/$new_img");
+			newImg($old_img, $new_img, $user_email);
+			// copy($_FILES['user_IMG']['name'], "users/user_images/'$new_img'");
+			// echo $new_img;
 		}
-
-		// resetValidEmail()
 		?>
 		<!--footer ends-->
 		<!-- Scripts -->
