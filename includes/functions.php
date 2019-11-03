@@ -8,8 +8,6 @@
 		exit(2);
 	}
 
-
-
 	function logout() {
 		if (isset($_GET['Logout'])) {
 			if ($_GET['Logout'] == 'TRUE') {
@@ -122,7 +120,7 @@
 			}
 		}
 
-	function newPass($oldPass, $newPass, $email) {
+	function newPass($old_pass, $new_pass, $email) {
 		include('config/connect.php');
 		ini_set("display_errors", TRUE);
 		// $SelectSQL = ("SELECT * FROM `users` WHERE user_email=:email");
@@ -130,10 +128,67 @@
 		// $SelectSQL->bindParam(':email', $email, PDO::PARAM_STR);
 		// $SelectSQL->execute();
 		// $row = $SelectSQL->fetch();
-		$query = ("UPDATE `users` SET user_passwd='$newPass' WHERE user_email='$email'");
+		$query = ("UPDATE `users` SET user_passwd='$new_pass' WHERE user_email='$email'");
 		$query = $dbh->prepare($query);
 		$query->execute();
 		return (1);
+	}
+
+	function newFName($old_name, $new_name, $email) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		$query = ("UPDATE `users` SET user_firstname='$new_name' WHERE user_email='$email'");
+		$query = $dbh->prepare($query);
+		$query->execute();
+		return (1);
+	}
+
+	function newSurname($old_surname, $new_surname, $email) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		$query = ("UPDATE `users` SET user_surname='$new_surname' WHERE user_email='$email'");
+		$query = $dbh->prepare($query);
+		$query->execute();
+		return (1);
+	}
+
+	function newContact($old_contact, $new_contact, $email) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		$query = ("UPDATE `users` SET user_contact='$new_contact' WHERE user_email='$email'");
+		$query = $dbh->prepare($query);
+		$query->execute();
+		return (1);
+	}
+
+	function check_file_uploaded_name ($filename)
+	{
+		return((bool) ((preg_match("`^[-0-9A-Z_\.]+$`i",$filename)) ? TRUE : FALSE));
+	}
+
+	function newImg($old_img, $new_img, $email) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		$query = ("UPDATE `users` SET user_image='$new_img' WHERE user_email='$email'");
+		$query = $dbh->prepare($query);
+		$query->execute();
+		return (1);
+	}
+
+	function newPost($postedBy, $user_email, $postImg, $postedWhen) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		try {
+		$readableDate = date('d-m-Y', $postedWhen);
+		$postQuery = ("INSERT INTO `images` (`img_name`, `post_byEmail`, `post_byID`) VALUES ('$postImg', '$user_email', '$postedBy')");
+		$postQuery = $dbh->prepare($postQuery);
+		$postQuery->execute();
+		}
+		catch(PDOException $e) {
+			echo "ERROR: ".$e->getMessage();
+			exit(2);
+		}
+		return(1);
 	}
 
 ?>
