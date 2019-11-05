@@ -187,6 +187,8 @@
 		include('config/connect.php');
 		ini_set("display_errors", TRUE);
 		try {
+		$postImg = hash('md5', ($postImg.$postedWhen));
+		$postImg = $postImg.'.png';
 		$readableDate = date('d-m-Y', $postedWhen);
 		$postQuery = ("INSERT INTO `images` (`img_name`, `post_byEmail`, `post_byID`) VALUES ('$postImg', '$user_email', '$postedBy')");
 		$postQuery = $dbh->prepare($postQuery);
@@ -197,6 +199,65 @@
 			exit(2);
 		}
 		return(1);
+	}
+
+	function usersPosts($user_email) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		try {
+		$postQuery = ("SELECT * FROM `images` WHERE post_byEmail='$user_email'");
+		$postQuery = $dbh->prepare($postQuery);
+		$postQuery->execute();
+		$row = $postQuery->fetchAll(PDO::FETCH_COLUMN, '1');
+		// print_r($row);
+		// echo "<img src='images/$image' width='112px' height='112px'>";
+		$array = array();
+		foreach ($row as $img) {
+			$array[] = $img;
+		}
+		// var_dump($array);
+		}
+		catch(PDOException $e) {
+			echo "ERROR: ".$e->getMessage();
+			exit(2);
+		}
+		return ($array);
+		// return($row);
+	}
+	function allUsersPosts() {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		try {
+			$postQuery = ("SELECT * FROM `images`");
+			$postQuery = $dbh->prepare($postQuery);
+			$postQuery->execute();
+			$row = $postQuery->fetchAll(PDO::FETCH_COLUMN, '1');
+			$array = array();
+			foreach ($row as $img) {
+				$array[] = $img;
+			}
+			// var_dump($array);
+		}
+		catch(PDOException $e) {
+			echo "ERROR: ".$e->getMessage();
+			exit(2);
+		}
+		return ($array);
+	}
+
+	function deletePost($email, $img) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		try {
+			$postDelete = ("DELETE FROM `images` WHERE img_name='$img'");
+			$postDelete = $dbh->prepare($postDelete);
+			$postDelete->execute();
+		}
+		catch(PDOException $e) {
+			echo "ERROR: ".$e->getMessage();
+			exit(2);
+		}
+		return (1);
 	}
 
 ?>
