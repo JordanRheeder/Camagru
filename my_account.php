@@ -38,26 +38,10 @@
 					echo "";
 				}
 			?>
-			<div class="navbar-item has-dropdown is-hoverable">
-				<a class="navbar-link">
-					Placeholder
+			<div class="navbar-item">
+				<a class="navbar-item" href="post-img.php">
+					Post
 				</a>
-
-				<div class="navbar-dropdown">
-					<a class="navbar-item">
-						Placeholder
-					</a>
-					<a class="navbar-item">
-						Placeholder
-					</a>
-					<a class="navbar-item">
-						Placeholder
-					</a>
-					<hr class="navbar-divider">
-						<a class="navbar-item">
-							Placeholder
-						</a>
-				</div>
 			</div>
 		</div>
 			<div class="navbar-end">
@@ -115,7 +99,7 @@
 							echo "<img class='is-rounded' src='https://bulma.io/images/placeholders/128x128.png'>";
 						}
 						else {
-							echo "<img class='is-rounded' src='users/user_images/$check_img'>";
+							echo "<img class='is-rounded' src='users/user_images/$check_img' style='width: 128px; height: 128px'>";
 						}
 					?>
 					<!-- <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png"> -->
