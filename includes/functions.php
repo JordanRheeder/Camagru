@@ -160,6 +160,14 @@
 		$query->execute();
 		return (1);
 	}
+	function newUN($old_username, $new_username, $email) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+		$query = ("UPDATE `users` SET username='$new_username' WHERE user_email='$email'");
+		$query = $dbh->prepare($query);
+		$query->execute();
+		return (1);
+	}
 
 	function check_file_uploaded_name ($filename)
 	{
