@@ -45,25 +45,19 @@
 					echo "";
 				}
 			?>
-			<div class="navbar-item has-dropdown is-hoverable">
-				<a class="navbar-link">
-					Placeholder
-				</a>
+			<div class="navbar-item">
+			<?php
+				if(!isset($_SESSION['user_email'])) {
+					echo "";
+				}
+				else {
+					echo "</a>";
+					echo "<a class='navbar-item' href='post-img.php'>";
+					echo "Post";
+					echo "</a>";
+				}
+			?>
 
-				<div class="navbar-dropdown">
-					<a class="navbar-item">
-						Placeholder
-					</a>
-					<a class="navbar-item">
-						Placeholder
-					</a>
-					<a class="navbar-item">
-						Placeholder
-					</a>
-					<hr class="navbar-divider">
-						<a class="navbar-item">
-							Placeholder
-						</a>
 				</div>
 			</div>
 		</div>
@@ -91,7 +85,7 @@
 					</div>
 				</div>
 			</div>
-			</div>
+
 		</nav>
 		</div>
 		<!--footer starts-->
@@ -121,6 +115,8 @@
 		});
 		</script>
 		<!-- Scripts end -->
+
+		
   </body>
 </html>
 <?php
