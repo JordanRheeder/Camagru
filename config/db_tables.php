@@ -9,6 +9,7 @@
 		$sql = "CREATE TABLE IF NOT EXISTS $table(
 		`user_id` INT(100) AUTO_INCREMENT PRIMARY KEY,
 		`user_passwd` VARCHAR(255) NOT NULL,
+		`username` VARCHAR(255) NOT NULL,
 		`user_firstname` VARCHAR(255) NOT NULL,
 		`user_surname` VARCHAR(255) NOT NULL,
 		`user_email` VARCHAR(255) NOT NULL,
