@@ -95,7 +95,11 @@ session_start();
 		<div class="content_wrapper" align="center">
 		<form action="register.php" method="post" enctype="multipart/form-data" align="center">
 					<table align="center">
-						<tr>
+            <tr>
+							<td align="right" style="color: white">......</td>
+							<td><input placeholder="Username"type="text" name="username" required></td>
+						</tr>
+            <tr>
 							<td align="right" style="color: white">......</td>
 							<td><input placeholder="E-mail"type="text" name="email" required></td>
 						</tr>
@@ -181,6 +185,7 @@ session_start();
 	if (isset($_POST['register'])) {
 		try {
 			$passwd = hash('whirlpool',$_POST['user_passwd']);
+      $username = $_POST['username'];
 			$firstname = $_POST['firstname'];
 			$surname = $_POST['surname'];
 			$img = $_FILES['profilePhoto']['name'];
@@ -190,8 +195,8 @@ session_start();
 			$token = hash('md5', $email);
 			$verified = 0;
 			move_uploaded_file($image_tmp, "users/user_images/$img");
-			$query = "INSERT INTO `users` (user_passwd, user_firstname, user_surname, user_email, user_contact, user_image, token, verified) VALUES (?,?,?,?,?,?,?,?)";
-			$query = $dbh->prepare($query);
+			$query = "INSERT INTO `users` (user_passwd, user_firstname, user_surname, user_email, username, user_contact, user_image, token, verified) VALUES (?,?,?,?,?,?,?,?,?)";
+      $query = $dbh->prepare($query);
 
 			//********* checking the database for existing emails or users *********
 			$verifySQL = ("SELECT user_email FROM `users` WHERE user_email=:user_email");
@@ -206,10 +211,11 @@ session_start();
 			$query->bindParam('2', $firstname);
 			$query->bindParam('3', $surname);
 			$query->bindParam('4', $email);
-			$query->bindParam('5', $contact);
-			$query->bindParam('6', $img);
-			$query->bindParam('7', $token);
-			$query->bindParam('8', $verified);
+      $query->bindParam('5', $username);
+			$query->bindParam('6', $contact);
+			$query->bindParam('7', $img);
+			$query->bindParam('8', $token);
+			$query->bindParam('9', $verified);
 			$query->execute();
 				if (mailVerifCode($email, $token, $firstname))
 					echo "<script>alert('Account created!');</script>";
