@@ -102,6 +102,16 @@
 				<table align='center'>
 				<tr>
 					<td align='center' style='color: white'>......</td>
+					<td><input placeholder='Username' type='text' name='UN' ></td>
+					<td><input class='button is-primary' type='submit' name='updateUN' value='Change Username' style='margin-left: 3px; margin-top: 0px; height: 50%; width: 120px; font-size: 10px; align:center'/></td>
+				</tr>
+				</table>
+		</form>
+
+		<form action="" method="post" enctype="multipart/form-data" align="center">
+				<table align='center'>
+				<tr>
+					<td align='center' style='color: white'>......</td>
 					<td><input placeholder='Password' type='password' name='user_password' ></td>
 					<td><input class='button is-primary' type='submit' name='updatePASSWORD' value='Change Password' style='margin-left: 3px; margin-top: 0px; width: 120px;  height: 50%; font-size: 10px; align:center'/></td>
 				</tr>
@@ -161,6 +171,7 @@
 		$row = $queryU->fetch();
 		$user_email = $row['user_email'];
 		$old_img = $row['user_image'];
+		$old_username = $row['username'];
 		// echo $old_img;
 		$old_surname = $row['user_surname'];
 		$old_contact = $row['user_contact'];
@@ -205,6 +216,10 @@
 			newImg($old_img, $new_img, $user_email);
 			// copy($_FILES['user_IMG']['name'], "users/user_images/'$new_img'");
 			// echo $new_img;
+		}
+		else if (isset($_POST['updateUN'])) {
+			$new_username = $_POST['UN'];
+			newUN($old_username, $new_username, $user_email);
 		}
 		?>
 		<!--footer ends-->
