@@ -55,6 +55,12 @@
 					echo "<a class='navbar-item' href='post-img.php'>";
 					echo "Post";
 					echo "</a>";
+					if (isset($_SESSION['user_email'])) {
+						echo "<a class='navbar-item' href='view-posts.php'>My Posts</a>";
+					}
+					if (isset($_SESSION['user_email'])) {
+						echo "<a class='navbar-item' href='view-posts-all.php'>All Posts</a>";
+					}
 				}
 			?>
 
@@ -82,11 +88,12 @@
 								echo "<a class='button is-light' href='login.php'>Log in</a>";
 						}
 						?>
+
 					</div>
 				</div>
 			</div>
-
 		</nav>
+		<div>
 		</div>
 		<!--footer starts-->
 		<div id="footer">
@@ -116,7 +123,7 @@
 		</script>
 		<!-- Scripts end -->
 
-		
+
   </body>
 </html>
 <?php
