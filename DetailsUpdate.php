@@ -39,25 +39,9 @@
 				}
 			?>
 			<div class="navbar-item has-dropdown is-hoverable">
-				<a class="navbar-link">
-					Placeholder
+				<a class="navbar-item" href="post-img.php">
+					Post
 				</a>
-
-				<div class="navbar-dropdown">
-					<a class="navbar-item">
-						Placeholder
-					</a>
-					<a class="navbar-item">
-						Placeholder
-					</a>
-					<a class="navbar-item">
-						Placeholder
-					</a>
-					<hr class="navbar-divider">
-						<a class="navbar-item">
-							Placeholder
-						</a>
-				</div>
 			</div>
 		</div>
 			<div class="navbar-end">
