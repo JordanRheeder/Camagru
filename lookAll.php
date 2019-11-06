@@ -97,7 +97,7 @@
 		<?php
 			if (isset($_GET['img'])) {
 				$img = $_GET['img'];
-				echo "<img id='myImg' src='users/post_images/$img' alt='$img' style='width:100%;max-width:300px'>";
+				echo "<img id='myImg' src='users/user_posts/$img' alt='$img' style='width:100%;max-width:300px'>";
 			}
 		?>
 		<div class="buttons">
