@@ -38,11 +38,26 @@
 					echo "";
 				}
 			?>
-			<div class="navbar-item">
-				<a class="navbar-item" href="post-img.php">
-					Post
-				</a>
+			<div class="navbar-item has-dropdown is-hoverable">
+			<?php
+				if(!isset($_SESSION['user_email'])) {
+					echo "";
+				}
+				else {
+					echo "</a>";
+					echo "<a class='navbar-item' href='post-img.php'>";
+					echo "Post";
+					echo "</a>";
+					if (isset($_SESSION['user_email'])) {
+						echo "<a class='navbar-item' href='view-posts.php'>My Posts</a>";
+					}
+					if (isset($_SESSION['user_email'])) {
+						echo "<a class='navbar-item' href='view-posts-all.php'>All Posts</a>";
+					}
+				}
+			?>
 			</div>
+
 		</div>
 			<div class="navbar-end">
 				<div class="navbar-item">
