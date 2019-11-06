@@ -153,7 +153,7 @@ session_start();
 	}
 	// trying to validate the email for authenticity.
 	if (isset($_POST['register'])) {
-		$check_mail = $_POST['email'];
+		$check_mail = strtoupper($_POST['email']);
 		if (validate_email($check_mail) === 1)
 			echo "";
 		else {
