@@ -24,6 +24,28 @@
 		return (1);
 	}
 
+	function isVerifiedUser($email) {
+		try {
+			include('config/connect.php');
+		}
+		catch(PDOException $e) {
+			echo "ERROR: ".$e->getMessage();
+			exit(2);
+		}
+		$SelectSQL = ("SELECT * from `users` WHERE user_email=:user_email");
+		$select = $dbh->prepare($SelectSQL);
+		$select->bindParam(':user_email', $email, PDO::PARAM_STR);
+		$select->execute();
+		$row = $select->fetch();
+		$verified = $row['verified'];
+		if ($verified == '1') {
+			return (1);
+		}
+		else {
+			return (0);
+		}
+	}
+
 	function mailResetPassword($email, $hashed, $timestamp) {
 		try {
 			include('config/connect.php');
@@ -200,6 +222,25 @@
 		}
 		return(1);
 	}
+
+		function newPostSelfie($postedBy, $user_email, $postImg, $postedWhen) {
+			include('config/connect.php');
+			ini_set("display_errors", TRUE);
+			try {
+			// $postImg = hash('md5', ($postImg.$postedWhen));
+
+			// $readableDate = date('d-m-Y', $postedWhen);
+			$postQuery = ("INSERT INTO `images` (`img_name`, `post_byEmail`, `user-PK`) VALUES ('$postImg', '$user_email', '$postedBy')");
+			$postQuery = $dbh->prepare($postQuery);
+			$postQuery->execute();
+			}
+			catch(PDOException $e) {
+				echo "ERROR: ".$e->getMessage();
+				exit(2);
+			}
+			return(1);
+		}
+
 
 	function usersPosts($user_email) {
 		include('config/connect.php');
