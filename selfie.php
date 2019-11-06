@@ -176,12 +176,21 @@
 			// $file = base64_to_jpeg($test, $output_fileHash);
 			$filename_path = md5(time().uniqid()).".png";
 			$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $test));
-			file_put_contents("users/user_selfie/".$filename_path,$data);
-			// $new_img = $_FILES['selfie']['name'];
-			// $img_tmp = $_FILES['selfie']['tmp_name'];
-			// echo "<script>alert('$new_img')</script>";
-			// echo "<script>alert('$img_tmp')</script>";
-			// echo $file;
+			file_put_contents("users/user_posts/".$filename_path,$data);
+			// insert file to DB
+			if (isset($_SESSION['user_email'])) {
+				include_once('config/connect.php');
+				// include_once('includes/functions.php');
+				$user_email = $_SESSION['user_email'];
+				$postQuery = ("SELECT * FROM `users` WHERE user_email='$user_email'");
+				$postQuery = $dbh->prepare($postQuery);
+				$postQuery->execute();
+				$row = $postQuery->fetch();
+				$postedBy = $row['user_id'];
+				$user_email = $_SESSION['user_email'];
+				$postedWhen = time();
+				newPostSelfie($postedBy, $user_email, $filename_path, $postedWhen);
+			}
 		}
 	?>
 		<!-- <div>
