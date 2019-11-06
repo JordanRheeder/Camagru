@@ -48,7 +48,7 @@
 					echo "";
 				}
 			?>
-			<div class="navbar-item">
+			<div class="navbar-item has-dropdown is-hoverable">
 			<?php
 				if(!isset($_SESSION['user_email'])) {
 					echo "";
@@ -66,8 +66,7 @@
 					}
 				}
 			?>
-
-				</div>
+			</div>
 			</div>
 		</div>
 			<div class="navbar-end">
