@@ -45,7 +45,7 @@
 		$query->bindParam(':newHash', $newToken, PDO::PARAM_STR);
 		$query->execute();
 		$subject = "Account reset for Camagru";
-		$message = "Good day, $email here is your reset password link:\n \t http://localhost/Camagru/new.php?ID=$newToken";
+		$message = "Good day, $email here is your reset password link:\n \t http://localhost:8080/Camagru/new.php?ID=$newToken";
 		$headers = "From: jrheeder@student.wethinkcode.co.za";
 		mail($email,$subject,$message,$headers);
 		return (1);
@@ -53,7 +53,7 @@
 
 	function mailVerifCode($email, $token, $firstname) {
 		$subject = "Account verification for Camagru";
-		$message = "Good day, $firstname here is your verfication link:\n \t http://localhost/Camagru/register.php?token=$token";
+		$message = "Good day, $firstname here is your verfication link:\n \t http://localhost:8080/Camagru/register.php?token=$token";
 		$headers = "From: jrheeder@student.wethinkcode.co.za";
 		mail($email,$subject,$message,$headers);
 		return (1);
@@ -189,8 +189,8 @@
 		try {
 		$postImg = hash('md5', ($postImg.$postedWhen));
 		$postImg = $postImg.'.png';
-		$readableDate = date('d-m-Y', $postedWhen);
-		$postQuery = ("INSERT INTO `images` (`img_name`, `post_byEmail`, `post_byID`) VALUES ('$postImg', '$user_email', '$postedBy')");
+		// $readableDate = date('d-m-Y', $postedWhen);
+		$postQuery = ("INSERT INTO `images` (`img_name`, `post_byEmail`, `user-PK`) VALUES ('$postImg', '$user_email', '$postedBy')");
 		$postQuery = $dbh->prepare($postQuery);
 		$postQuery->execute();
 		}
