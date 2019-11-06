@@ -106,10 +106,10 @@
 			<?php
 				if (isset($_POST['CfmPost'])) {
 					$new_img = $_FILES['UplPost']['name'];
+					$img_tmp = $_FILES['UplPost']['tmp_name'];
 					$postedWhenEpoch = time();
 					$postedWhenFormatted = date('d-m-Y', $postedWhenEpoch);
 					$hashedName = hash('md5', $new_img.$postedWhenEpoch);
-					$img_tmp = $_FILES['UplPost']['tmp_name'];
 					move_uploaded_file($img_tmp, "users/user_posts/$hashedName.png");
 					if (isset($_SESSION['user_email'])) {
 						include_once('config/connect.php');
