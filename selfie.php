@@ -15,11 +15,6 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Camagru</title>
-	<style>
-		#myOnlineCamera video{width:320px;height:240px;margin:15px;float:left;}
-		#myOnlineCamera canvas{width:320px;height:240px;margin:15px;float:left;}
-		#myOnlineCamera button{clear:both;margin:30px;}
-	</style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 	</head>
@@ -98,11 +93,68 @@
 				</div>
 			</div>
 		</nav>
-		<div id="myOnlineCamera">
-		    <video></video>
-		    <canvas></canvas>
-		    <button>Take Photo!</button>
-		</div>
+
+<!-- Stream video via webcam -->
+<div class="video-wrap">
+    <video id="video" autoplay></video>
+</div>
+
+<!-- Trigger canvas web API -->
+<div class="controller">
+    <button id="snap" class="button is-primary">Capture</button>
+</div>
+<a id="download" download="image.png"><button type="button" onClick="download()">Download</button></a>
+
+<!-- Webcam video snapshot -->
+<canvas id="canvas" width="640" height="480"></canvas>
+
+		<script>
+		// 'use strict';
+
+		const video = document.getElementById('video');
+		const canvas = document.getElementById('canvas');
+		const snap = document.getElementById("snap");
+		const errorMsgElement = document.querySelector('span#errorMsg');
+
+		const constraints = {
+		  audio: false,
+		  video: {
+		    width: 640, height: 480
+		  }
+		};
+
+		// Access webcam
+		async function init() {
+		  try {
+		    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+		    handleSuccess(stream);
+		  } catch (e) {
+		    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+		  }
+		}
+
+		// Success
+		function handleSuccess(stream) {
+		  window.stream = stream;
+		  video.srcObject = stream;
+		}
+
+		// Load init
+		init();
+
+		// Draw image
+		var context = canvas.getContext('2d');
+		snap.addEventListener("click", function() {
+			context.drawImage(video, 0, 0, 640, 480);
+		});
+		function download(){
+        var download = document.getElementById("download");
+        var image = document.getElementById("canvas").toDataURL("image/png")
+                    .replace("image/png", "image/octet-stream");
+        download.setAttribute("href", image);
+
+    }
+</script>
 		<!-- <div>
 		</div> -->
 		<!--footer starts-->
@@ -111,90 +163,8 @@
 		</div>
 		<!--footer ends-->
 		<!-- Scripts -->
-		<script>document.addEventListener('DOMContentLoaded', () => {
-			// Get all "navbar-burger" elements
-			const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-			// Check if there are any navbar burgers
-			if ($navbarBurgers.length > 0) {
-				// Add a click event on each of them
-				$navbarBurgers.forEach( el => {
-					el.addEventListener('click', () => {
-					// Get the target from the "data-target" attribute
-						const target = el.dataset.target;
-						const $target = document.getElementById(target);
-						// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-						el.classList.toggle('is-active');
-						$target.classList.toggle('is-active');
 
-					});
-				});
-			}
-		});
-		</script>
-<script>
 
-var videoObj    = { "video": true },
-    errBack        = function(error){
-        // alert("Video capture error: ", error.code);
-    };
-
-// Ask the browser for permission to use the Webcam
-if(navigator.getUserMedia){                    // Standard
-    navigator.getUserMedia(videoObj, startWebcam, errBack);
-}else if(navigator.webkitGetUserMedia){        // WebKit
-    navigator.webkitGetUserMedia(videoObj, startWebcam, errBack);
-}else if(navigator.mozGetUserMedia){        // Firefox
-    navigator.mozGetUserMedia(videoObj, startWebcam, errBack);
-};
-
-function startWebcam(stream){
-
-    var myOnlineCamera    = getElementById('myOnlineCamera'),
-        video            = myOnlineCamera.querySelectorAll('video'),
-        canvas            = myOnlineCamera.querySelectorAll('canvas');
-
-    video.width = video.offsetWidth;
-
-    if(navigator.getUserMedia){                    // Standard
-        video.src = stream;
-        video.play();
-    }else if(navigator.webkitGetUserMedia){        // WebKit
-        video.src = window.webkitURL.createObjectURL(stream);
-        video.play();
-    }else if(navigator.mozGetUserMedia){        // Firefox
-        video.src = window.URL.createObjectURL(stream);
-        video.play();
-    };
-
-    // Click to take the photo
-    $('#webcam-popup .takephoto').click(function(){
-        // Copying the image in a temporary canvas
-        var temp = document.createElement('canvas');
-
-        temp.width  = video.offsetWidth;
-        temp.height = video.offsetHeight;
-
-        var tempcontext = temp.getContext("2d"),
-            tempScale = (temp.height/temp.width);
-
-        temp.drawImage(
-            video,
-            0, 0,
-            video.offsetWidth, video.offsetHeight
-        );
-
-        // Resize it to the size of our canvas
-        canvas.style.height    = parseInt( canvas.offsetWidth * tempScale );
-        canvas.width        = canvas.offsetWidth;
-        canvas.height        = canvas.offsetHeight;
-        var context        = canvas.getContext("2d"),
-            scale        = canvas.width/temp.width;
-        context.scale(scale, scale);
-        context.drawImage(bigimage, 0, 0);
-    });
-};
-
-</script>
 		<!-- Scripts end -->
 
 
