@@ -1,12 +1,14 @@
 <?php
 	ini_set("display_errors", true);
 	include ("config/db_setup.php");
+	include_once("includes/functions.php");
 	if (session_id() === "") {
 		session_start();
 	}
 	else {
 		$session_id=session_id();
 	}
+
 	// include("functions/functions.php");
 ?>
 <!DOCTYPE html>
@@ -45,7 +47,7 @@
 					echo "";
 				}
 			?>
-			<div class="navbar-item">
+			<div class="navbar-item has-dropdown is-hoverable">
 			<?php
 				if(!isset($_SESSION['user_email'])) {
 					echo "";
@@ -63,6 +65,7 @@
 					}
 				}
 			?>
+			</div>
 
 				</div>
 			</div>
@@ -127,6 +130,24 @@
   </body>
 </html>
 <?php
+
+	if ($_SESSION == NULL){
+		echo "";
+	}
+	else {
+		$email = $_SESSION['user_email'];
+		// echo $email;
+		if (isVerifiedUser($email) == '1') {
+			echo "";
+		}
+		else if (isVerifiedUser($email) == '0')
+		{
+			echo "<script>alert('Verify your account please')</script>";
+			echo "<script>window.open('login.php', '_self')</script>";
+			session_destroy();
+		}
+	}
+
   if (isset($_GET['Logout'])) {
 	if ($_GET['Logout'] == 'TRUE')
 	  session_destroy();
