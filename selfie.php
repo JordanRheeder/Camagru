@@ -95,19 +95,27 @@
 		</nav>
 
 <!-- Stream video via webcam -->
-<div class="video-wrap">
-    <video id="video" autoplay></video>
-</div>
+	<div class="video-wrap">
+	    <video id="video" autoplay></video>
+	</div>
 
-<!-- Trigger canvas web API -->
-<div class="controller">
-    <button id="snap" class="button is-primary">Capture</button>
-</div>
-<a id="download" download="image.png"><button type="button" onClick="download()">Download</button></a>
+	<!-- Trigger canvas web API -->
+	<div class="controller">
+	    <button id="snap" class="button is-primary">Capture</button>
+	</div>
 
-<!-- Webcam video snapshot -->
-<canvas id="canvas" width="640" height="480"></canvas>
+	<!-- Webcam video snapshot -->
+	<canvas id="canvas" width="640" height="480"></canvas>
 
+	<form action="" method="post" enctype="multipart/form-data" align="center">
+		<table align='center'>
+		<tr>
+			<td><input id='selfie' type='hidden' name='selfie' value='' style="margin-left: -106px;"/></td>
+			<td><input id='submitSelfie' class='button is-primary' onClick="download()" type='submit' name='submitSelfie' value='Upload Post' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+		</tr>
+		</table>
+	</form>
+<!-- <a id="download" download="image.png"><button type="button" onClick="download()">Download</button></a> -->
 		<script>
 		// 'use strict';
 
@@ -115,6 +123,7 @@
 		const canvas = document.getElementById('canvas');
 		const snap = document.getElementById("snap");
 		const errorMsgElement = document.querySelector('span#errorMsg');
+
 
 		const constraints = {
 		  audio: false,
@@ -148,13 +157,33 @@
 			context.drawImage(video, 0, 0, 640, 480);
 		});
 		function download(){
-        var download = document.getElementById("download");
-        var image = document.getElementById("canvas").toDataURL("image/png")
-                    .replace("image/png", "image/octet-stream");
-        download.setAttribute("href", image);
-
+        	// var download = document.getElementById("download");
+        	var image = document.getElementById("canvas").toDataURL("image/png")
+			// var image = document.getElementById("canvas").toDataURL("image/png");
+        	// download.setAttribute("href", image);
+			document.getElementById("selfie").value = image;
     }
 </script>
+
+
+	<?php
+		include('includes/functions.php');
+		if (isset($_POST['submitSelfie'])) {
+			$test = $_POST['selfie'];
+			echo $test;
+			// $output_file = $_SESSION['user_email'];
+			// $output_fileHash = hash('md5', $output_file);
+			// $file = base64_to_jpeg($test, $output_fileHash);
+			$filename_path = md5(time().uniqid()).".png";
+			$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $test));
+			file_put_contents("users/user_selfie/".$filename_path,$data);
+			// $new_img = $_FILES['selfie']['name'];
+			// $img_tmp = $_FILES['selfie']['tmp_name'];
+			// echo "<script>alert('$new_img')</script>";
+			// echo "<script>alert('$img_tmp')</script>";
+			// echo $file;
+		}
+	?>
 		<!-- <div>
 		</div> -->
 		<!--footer starts-->
