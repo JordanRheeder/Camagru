@@ -93,7 +93,7 @@
 					$user_email = $_SESSION['user_email'];
 					$ima = usersPosts($user_email);
 					foreach ($ima as $img)
-						echo "<a href=lookMy.php?img=$img><img src='users/post_images/$img' alt='$img' style='width:100%;max-width:300px'></a>";
+						echo "<a href=lookMy.php?img=$img><img src='users/user_posts/$img' alt='$img' style='width:100%;max-width:300px'></a>";
 				}
 			?>
 		</div>
