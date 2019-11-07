@@ -99,8 +99,10 @@
 					<td align='center' style='color: white'>......</td>
 					<td><input placeholder='pic-post' type='file' name='UplPost' style="margin-left: -106px;"/></td>
 					<td><input class='button is-primary' type='submit' name='CfmPost' value='Upload Post' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+
 				</tr>
 				</table>
+				<td><a class='button is-primary' href='selfie.php' style='align:center; margin-left:162px;margin-top: 2px; width: 120px; height: 50%; font-size: 10px;'>Selfie?</a></td>
 		</form>
 			<?php
 				if (isset($_POST['CfmPost'])) {
