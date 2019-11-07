@@ -95,27 +95,67 @@
 		</nav>
 
 <!-- Stream video via webcam -->
-	<div class="video-wrap">
-	    <video id="video" autoplay></video>
+	<div class="video-wrap" align="center">
+	    <video id="video" autoplay align="center"></video>
 	</div>
 
 	<!-- Trigger canvas web API -->
-	<div class="controller">
-	    <button id="snap" class="button is-primary">Capture</button>
+	<div class="controller" align="center">
+	    <button id="snap" class="button is-primary" align="center">Capture</button>
 	</div>
 
 	<!-- Webcam video snapshot -->
-	<canvas id="canvas" width="640" height="480"></canvas>
-
-	<form action="" method="post" enctype="multipart/form-data" align="center">
+<div align="center">
+	<canvas  align="center" id="canvas" width="640" height="480"></canvas>
+</div>
+	<!-- <form action="" method="post" enctype="multipart/form-data" align="center">
 		<table align='center'>
 		<tr>
-			<td><input id='selfie' type='hidden' name='selfie' value='' style="margin-left: -106px;"/></td>
-			<td><input id='submitSelfie' class='button is-primary' onClick="download()" type='submit' name='submitSelfie' value='Upload Post' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+<td><input id='selfie' type='hidden' name='selfie' value='' style="margin-left: -106px;"/></td>
+<td><input id='submitSelfie' class='button is-primary' onClick="download()" type='submit' name='submitSelfie' value='Upload Post' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
 		</tr>
 		</table>
-	</form>
-<!-- <a id="download" download="image.png"><button type="button" onClick="download()">Download</button></a> -->
+	</form> -->
+	<div align="center" style="margin-left: 5px; margin-top: 10px;">
+	<div class="dropdown is-hoverable">
+	  <div class="dropdown-trigger">
+	    <button class="button is-primary" aria-haspopup="true" aria-controls="dropdown-menu4">
+	      <span>Stickers</span>
+	      <span class="icon is-small">
+	        <i class="fas fa-angle-down" aria-hidden="true"></i>
+	      </span>
+	    </button>
+	  </div>
+	  <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+	    <div class="dropdown-content" style="margin-left: -70px;">
+	      <div class="dropdown-item">
+	        <p>
+					<form action="#" method="post" enctype="multipart/form-data" align="center">
+						<table align='center'>
+	<tr>
+		<td><input class="checkbox is-primary" type='radio' name='sticker' value='1'/>1</td>
+	</tr>
+	<tr>
+		<td><input class="checkbox is-primary" type='radio' name='sticker' value='2'/>2</td>
+	</tr>
+	<tr>
+		<td><input class="checkbox is-primary" type='radio' name='sticker' value='3'/>3</td>
+	</tr>
+	<tr>
+		<td><input class="checkbox is-primary" type='radio' name='sticker' value='4'/>4</td>
+	</tr>
+	<td><input id='selfie' type='hidden' name='selfie' value='' style="margin-left: -106px;"/></td>
+	<td><input id='submitSelfie' class='button is-primary' onClick="download()" type='submit' name='submitSelfie' value='Upload Post' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+	<!-- <td><input class="button is-primary" type='submit' name='apply' value='apply'/></td> -->
+						</table>
+					</form>
+			</p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	</div>
+
 		<script>
 		// 'use strict';
 
@@ -158,29 +198,33 @@
 		});
 		function download(){
         	// var download = document.getElementById("download");
-        	var image = document.getElementById("canvas").toDataURL("image/png")
+        	var image = document.getElementById("canvas").toDataURL("image/png");
 			// var image = document.getElementById("canvas").toDataURL("image/png");
         	// download.setAttribute("href", image);
 			document.getElementById("selfie").value = image;
     }
 </script>
-
-
+<script>
+	function onlyOne(checkbox) {
+	    var checkboxes = document.getElementsByName('check')
+	    checkboxes.forEach((item) => {
+	        if (item !== checkbox) item.checked = false
+	    })
+	}
+</script>
 	<?php
 		include('includes/functions.php');
-		if (isset($_POST['submitSelfie'])) {
-			$test = $_POST['selfie'];
-			echo $test;
-			// $output_file = $_SESSION['user_email'];
-			// $output_fileHash = hash('md5', $output_file);
-			// $file = base64_to_jpeg($test, $output_fileHash);
+		// if (isset($_POST['sticker'])) {
+		// 	global $choice;
+		// 	$choice = $_POST['sticker'];
+		// }
+			if (isset($_POST['submitSelfie'])) {
+			$choice = $_POST['sticker'];
+			$selfie = $_POST['selfie'];
 			$filename_path = md5(time().uniqid()).".png";
-			$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $test));
-			file_put_contents("users/user_posts/".$filename_path,$data);
-			// insert file to DB
+			storeImage($selfie, $filename_path, $choice);
 			if (isset($_SESSION['user_email'])) {
 				include_once('config/connect.php');
-				// include_once('includes/functions.php');
 				$user_email = $_SESSION['user_email'];
 				$postQuery = ("SELECT * FROM `users` WHERE user_email='$user_email'");
 				$postQuery = $dbh->prepare($postQuery);
@@ -192,19 +236,8 @@
 				newPostSelfie($postedBy, $user_email, $filename_path, $postedWhen);
 			}
 		}
+
 	?>
-		<!-- <div>
-		</div> -->
-		<!--footer starts-->
-		<div id="footer">
-			<h2 style="text-align:center; padding-top:30px;">jrheeder</h2>
-		</div>
-		<!--footer ends-->
-		<!-- Scripts -->
-
-
-		<!-- Scripts end -->
-
 
   </body>
 </html>
