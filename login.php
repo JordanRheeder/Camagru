@@ -140,7 +140,7 @@ if (session_id() === "") {
 
 		if (isset($_POST['login'])) {
 			try {
-				$email = $_POST['email'];
+				$email = strtolower($_POST['email']);
 				$passwd = hash('whirlpool', $_POST['pass']);
 
 				//********* Select password and email from the database to check whether it's a match. Then login... *********

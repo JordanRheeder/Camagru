@@ -153,7 +153,7 @@ session_start();
 	}
 	// trying to validate the email for authenticity.
 	if (isset($_POST['register'])) {
-		$check_mail = strtoupper($_POST['email']);
+		$check_mail = strtolower($_POST['email']);
 		if (validate_email($check_mail) === 1)
 			echo "";
 		else {
@@ -165,13 +165,13 @@ session_start();
 	if (isset($_POST['register'])) {
 		try {
 			$passwd = hash('whirlpool',$_POST['user_passwd']);
-      $username = $_POST['username'];
+			$username = $_POST['username'];
 			$firstname = $_POST['firstname'];
 			$surname = $_POST['surname'];
 			$img = $_FILES['profilePhoto']['name'];
 			$image_tmp = $_FILES['profilePhoto']['tmp_name'];
 			$contact = $_POST['PhoneNumber'];
-			$email = $_POST['email'];
+			$email = strtolower($_POST['email']);
 			$token = hash('md5', $email);
 			$verified = 0;
 			move_uploaded_file($image_tmp, "users/user_images/$img");

@@ -177,7 +177,7 @@
 		$old_name = $row['user_firstname'];
 		$old_pass = $row['user_passwd'];
 		if (isset($_POST['updateEMAIL'])) {
-			$newEmail = $_POST['user_email'];
+			$newEmail = strtolower($_POST['user_email']);
 			if (validate_email($newEmail) === 1)
 				echo "";
 			else {
