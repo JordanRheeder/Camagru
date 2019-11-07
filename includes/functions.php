@@ -300,7 +300,30 @@
 		}
 		return (1);
 	}
+	function storeImage($rawData, $filename_path, $choice) {
+		// $filename_path = md5(time().uniqid()).".png";
+		$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $rawData));
+		file_put_contents("users/user_posts/".$filename_path,$data);
+		$truePath = $filename_path;
+		superImpose($truePath, $choice);
+	}
+	function superImpose($imgsrc, $choice) {
+		// Create image instances
+		$your_original_image = ("users/user_posts/$imgsrc");
+		$your_frame_image = ("users/user_stickers/$choice.png");
+		# If you don't know the type of image you are using as your originals.
+		$image = imagecreatefromstring(file_get_contents($your_original_image));
+		$frame = imagecreatefromstring(file_get_contents($your_frame_image));
+		# If you know your originals are of type PNG.
+		$image = imagecreatefrompng($your_original_image);
+		$frame = imagecreatefrompng($your_frame_image);
+		imagecopymerge($image, $frame, 0, 0, 0, 0, 128, 128, 40);
+		# Save the image to a file
 
-
+		imagepng($image, "users/user_posts/$imgsrc");
+		# Output straight to the browser.
+		echo "<div align=middle style='margin-top:-525px'><img src='users/user_posts/$imgsrc' style='')/></div>";
+		return (1);
+	}
 
 ?>
