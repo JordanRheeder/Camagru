@@ -106,6 +106,12 @@
 		</form>
 			<?php
 				if (isset($_POST['CfmPost'])) {
+					if($_FILES['UplPost']['size'] == 0) {
+						echo "try upload something next time...";
+						exit(0);
+					}
+				}
+				if (isset($_POST['CfmPost'])) {
 					$new_img = $_FILES['UplPost']['name'];
 					$img_tmp = $_FILES['UplPost']['tmp_name'];
 					$postedWhenEpoch = time();
