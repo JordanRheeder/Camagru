@@ -205,14 +205,14 @@
 		return (1);
 	}
 
-	function newPost($postedBy, $user_email, $postImg, $postedWhen) {
+	function newPost($postedBy, $user_email, $postImg, $postedWhen, $username) {
 		include('config/connect.php');
 		ini_set("display_errors", TRUE);
 		try {
 		$postImg = hash('md5', ($postImg.$postedWhen));
 		$postImg = $postImg.'.png';
 		// $readableDate = date('d-m-Y', $postedWhen);
-		$postQuery = ("INSERT INTO `images` (`img_name`, `post_byEmail`, `user-PK`) VALUES ('$postImg', '$user_email', '$postedBy')");
+		$postQuery = ("INSERT INTO `images` (`img_name`, `post_byEmail`, `user-PK`, `username`) VALUES ('$postImg', '$user_email', '$postedBy', '$username')");
 		$postQuery = $dbh->prepare($postQuery);
 		$postQuery->execute();
 		}
@@ -223,14 +223,14 @@
 		return(1);
 	}
 
-		function newPostSelfie($postedBy, $user_email, $postImg, $postedWhen) {
+		function newPostSelfie($postedBy, $user_email, $postImg, $postedWhen, $username) {
 			include('config/connect.php');
 			ini_set("display_errors", TRUE);
 			try {
 			// $postImg = hash('md5', ($postImg.$postedWhen));
 
 			// $readableDate = date('d-m-Y', $postedWhen);
-			$postQuery = ("INSERT INTO `images` (`img_name`, `post_byEmail`, `user-PK`) VALUES ('$postImg', '$user_email', '$postedBy')");
+			$postQuery = ("INSERT INTO `images` (`img_name`, `post_byEmail`, `user-PK`) VALUES ('$postImg', '$user_email', '$postedBy', '$username')");
 			$postQuery = $dbh->prepare($postQuery);
 			$postQuery->execute();
 			}
@@ -324,6 +324,60 @@
 		# Output straight to the browser.
 		echo "<div align=middle style='margin-top:-525px'><img src='users/user_posts/$imgsrc' style='')/></div>";
 		return (1);
+	}
+
+	function getPostID($img, $email, $comment) {
+		include ('config/connect.php');
+
+		$postQuery = ("SELECT * FROM `images` WHERE post_byEmail='$email' AND img_name='$img'");
+		$postQuery = $dbh->prepare($postQuery);
+		$postQuery->execute();
+		$row = $postQuery->fetch();
+		$UID = $row['UID'];
+		// echo $temp;
+		submitcomment($email, $img, $comment, $UID);
+	}
+
+	function submitcomment($email, $img, $comment, $UID) {
+		include ('config/connect.php');
+
+		$postQuery = ("INSERT INTO `comment` (`post_id`, `user_email`, `content`, `image_name`) VALUES ('$UID', '$email', '$comment', '$img')");
+		$postQuery = $dbh->prepare($postQuery);
+		$postQuery->execute();
+		return (0);
+	}
+	function echoComments($img) {
+		include('config/connect.php');
+		ini_set("display_errors", TRUE);
+
+		$SelectQuery = ("SELECT `content`, `user_email` FROM `comment` WHERE image_name='$img'");
+		$SelectQuery = $dbh->prepare($SelectQuery);
+		$SelectQuery->execute();
+		$row1 = $SelectQuery->fetchAll();
+		// var_dump($row);
+		// $array = array();
+		// $userEmail = $_SESSION['user_email'];
+		// while (isset($row1[$i]) && isset($row2[$i])) {
+		// 	echo "<div class='media-content'><div class='content'><p><strong>$row2[$i]</strong> <br/>$row1[$i]</p></div></div>";
+		// 	$i++;
+		// 	echo 'yin';
+		// }
+		foreach ($row1 as $row1) {
+			$y =1;
+			$x = 0;
+			echo "<div class='media-content'><div class='content'><p><strong>$row1[$y]</strong> <br/>$row1[$x]</p></div></div>";
+			$y++;
+			$x += $x + 2;
+		}
+		// for($i=0; $i<count($row1)-1; $i++) {
+		// 	$y=1;
+		// 	echo "<div class='media-content'><div class='content'><p><strong>$row1[$y]</strong> <br/>$row1[$i]</p></div></div>";
+		// 	$y++;
+		// }
+		// echo "<script>alert('window')</script>";
+		// print_r($array);
+		// return ($array);
+
 	}
 
 ?>
