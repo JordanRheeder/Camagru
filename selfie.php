@@ -133,16 +133,16 @@
 					<form action="#" method="post" enctype="multipart/form-data" align="center">
 						<table align='center'>
 	<tr>
-		<td><input class="checkbox is-primary" type='radio' name='sticker' value='1'/>1</td>
+		<td><input class="checkbox is-primary" type='checkbox' name='sticker' value='1'/>1</td>
 	</tr>
 	<tr>
-		<td><input class="checkbox is-primary" type='radio' name='sticker' value='2'/>2</td>
+		<td><input class="checkbox is-primary" type='checkbox' name='sticker' value='2'/>2</td>
 	</tr>
 	<tr>
-		<td><input class="checkbox is-primary" type='radio' name='sticker' value='3'/>3</td>
+		<td><input class="checkbox is-primary" type='checkbox' name='sticker' value='3'/>3</td>
 	</tr>
 	<tr>
-		<td><input class="checkbox is-primary" type='radio' name='sticker' value='4'/>4</td>
+		<td><input class="checkbox is-primary" type='checkbox' name='sticker' value='4'/>4</td>
 	</tr>
 	<td><input id='selfie' type='hidden' name='selfie' value='' style="margin-left: -106px;"/></td>
 	<td><input id='submitSelfie' class='button is-primary' onClick="download()" type='submit' name='submitSelfie' value='Upload Post' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
@@ -219,28 +219,34 @@
 		// 	$choice = $_POST['sticker'];
 		// }
 			if (isset($_POST['submitSelfie'])) {
-			$choice = $_POST['sticker'];
-			$selfie = $_POST['selfie'];
-			$filename_path = md5(time().uniqid()).".png";
-			storeImage($selfie, $filename_path, $choice);
-			if (isset($_SESSION['user_email'])) {
-				include_once('config/connect.php');
-				$user_email = $_SESSION['user_email'];
-				$postQuery = ("SELECT * FROM `users` WHERE user_email='$user_email'");
-				$postQuery = $dbh->prepare($postQuery);
-				$postQuery->execute();
-				$row = $postQuery->fetch();
-				$postedBy = $row['user_id'];
-				$user_email = $_SESSION['user_email'];
-				$username = $row['username'];
-				$postedWhen = time();
-				newPostSelfie($postedBy, $user_email, $filename_path, $postedWhen, $username);
+				if (isset($_POST['sticker'])) {
+				$choice = $_POST['sticker'];
+				$selfie = $_POST['selfie'];
+				$filename_path = md5(time().uniqid()).".png";
+				storeImage($selfie, $filename_path, $choice);
+				if (isset($_SESSION['user_email'])) {
+					include_once('config/connect.php');
+					$user_email = $_SESSION['user_email'];
+					$postQuery = ("SELECT * FROM `users` WHERE user_email='$user_email'");
+					$postQuery = $dbh->prepare($postQuery);
+					$postQuery->execute();
+					$row = $postQuery->fetch();
+					$postedBy = $row['user_id'];
+					$user_email = $_SESSION['user_email'];
+					$username = $row['username'];
+					$postedWhen = time();
+					newPostSelfie($postedBy, $user_email, $filename_path, $postedWhen, $username);
+				}
 			}
 		}
 
 	?>
-
-  </body>
+	<?php
+		include_once('includes/functions.php');
+		$email = $_SESSION['user_email'];
+		get_upload_thumbs($email);
+	?>
+	</body>
 </html>
 <?php
   if (isset($_GET['Logout'])) {
