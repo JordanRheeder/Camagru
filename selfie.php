@@ -232,8 +232,9 @@
 				$row = $postQuery->fetch();
 				$postedBy = $row['user_id'];
 				$user_email = $_SESSION['user_email'];
+				$username = $row['username'];
 				$postedWhen = time();
-				newPostSelfie($postedBy, $user_email, $filename_path, $postedWhen);
+				newPostSelfie($postedBy, $user_email, $filename_path, $postedWhen, $username);
 			}
 		}
 
