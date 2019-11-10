@@ -8,8 +8,6 @@
 	else {
 		$session_id=session_id();
 	}
-
-	// include("functions/functions.php");
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -40,7 +38,6 @@
 					</a>
 			<?php
 				if(isset($_SESSION['user_email'])) {
-					// echo "<a href='index.php?Logout=TRUE'>Logout</a>";
 					echo "<a class='navbar-item' href='my_account.php'>My Account</a>";
 				}
 				else {
@@ -96,8 +93,10 @@
 				</div>
 			</div>
 		</nav>
+		<!-- Body -->
 		<div>
 		</div>
+		<!-- Body ends -->
 		<!--footer starts-->
 		<div id="footer">
 			<h2 style="text-align:center; padding-top:30px;">jrheeder</h2>
@@ -118,25 +117,20 @@
 						// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
 						el.classList.toggle('is-active');
 						$target.classList.toggle('is-active');
-
 					});
 				});
 			}
 		});
 		</script>
 		<!-- Scripts end -->
-
-
   </body>
 </html>
 <?php
-
 	if ($_SESSION == NULL){
 		echo "";
 	}
 	else {
 		$email = $_SESSION['user_email'];
-		// echo $email;
 		if (isVerifiedUser($email) == '1') {
 			echo "";
 		}
@@ -147,10 +141,9 @@
 			session_destroy();
 		}
 	}
-
-  if (isset($_GET['Logout'])) {
-	if ($_GET['Logout'] == 'TRUE')
-	  session_destroy();
-	  echo "<script>window.open('index.php', '_self')</script>";
-  }
+	if (isset($_GET['Logout'])) {
+		if ($_GET['Logout'] == 'TRUE')
+			session_destroy();
+			echo "<script>window.open('index.php', '_self')</script>";
+	}
 ?>
