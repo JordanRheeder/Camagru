@@ -354,14 +354,6 @@
 		$SelectQuery = $dbh->prepare($SelectQuery);
 		$SelectQuery->execute();
 		$row1 = $SelectQuery->fetchAll();
-		// var_dump($row);
-		// $array = array();
-		// $userEmail = $_SESSION['user_email'];
-		// while (isset($row1[$i]) && isset($row2[$i])) {
-		// 	echo "<div class='media-content'><div class='content'><p><strong>$row2[$i]</strong> <br/>$row1[$i]</p></div></div>";
-		// 	$i++;
-		// 	echo 'yin';
-		// }
 		foreach ($row1 as $row1) {
 			$y =1;
 			$x = 0;
@@ -369,15 +361,6 @@
 			$y++;
 			$x += $x + 2;
 		}
-		// for($i=0; $i<count($row1)-1; $i++) {
-		// 	$y=1;
-		// 	echo "<div class='media-content'><div class='content'><p><strong>$row1[$y]</strong> <br/>$row1[$i]</p></div></div>";
-		// 	$y++;
-		// }
-		// echo "<script>alert('window')</script>";
-		// print_r($array);
-		// return ($array);
-
 	}
 
 ?>
