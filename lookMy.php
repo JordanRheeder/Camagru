@@ -118,6 +118,16 @@
 				}
 
 			?>
+		<form action="#" method="post" enctype="multipart/form-data" align="center">
+			<table align="center">
+				<br>
+				<br>
+				<tr>
+					<td align="right" style="color: white">......</td>
+					<td><textarea name="txtcomment" style="width:350px; height: 100px;" maxlength="300"></textarea></td>
+					<td><input class='button is-primary' type='submit' name='submitComment' value='Comment' style='margin-left: 5px; margin-top: 50px; width: 120px; height: 50%; font-size: 10px; align: center'/></td>
+				</tr>
+			</table>
 			<!-- <a class='button is-primary' href='look.php'>Delete Post</a> -->
 		</div>
 		<!--footer starts-->
@@ -164,6 +174,32 @@
 		// LIKE POST FUNCTION (ALSO CHECK IF THIS USER HAS LIKED THIS POST IF YES, UNLIKE)
 		}
 	}
+
+	try {
+		include_once('includes/functions.php');
+		$img = $_GET['img'];
+		// echo $img;
+		echoComments($img);
+
+
+	}
+	catch(PDOException $e) {
+		echo "ERROR: ".$e->getMessage();
+		exit(2);
+	}
+
+		if (isset($_POST['submitComment'])) {
+			include_once('includes/functions.php');
+
+			$comment = $_POST['txtcomment'];
+			$email = $_SESSION['user_email'];
+			$img = $_GET['img'];
+			//submitcomment($email, $img, $comment);
+			getPostID($img, $email, $comment);
+			echo "<script>window.open('', '_self')</script>";
+			// --> get pk from the poster. needed? fuck no...
+		}
+
 	if (isset($_GET['Delete'])) {
 		if ($_GET['Delete'] == 'TRUE') {
 			// DELETE POST FUNCTION
