@@ -1,13 +1,12 @@
 <?php
 	ini_set("display_errors", true);
-	include ("config/db_setup.php");
+	include("config/db_setup.php");
 	if (session_id() === "") {
 		session_start();
 	}
 	else {
 		$session_id=session_id();
 	}
-	// include("functions/functions.php");
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -38,7 +37,6 @@
 					</a>
 			<?php
 				if(isset($_SESSION['user_email'])) {
-					// echo "<a href='index.php?Logout=TRUE'>Logout</a>";
 					echo "<a class='navbar-item' href='my_account.php'>My Account</a>";
 				}
 				else {
@@ -63,7 +61,6 @@
 					}
 				}
 			?>
-
 				</div>
 			</div>
 		</div>
@@ -101,9 +98,20 @@
 			}
 		?>
 		<div class="buttons">
-			<!-- Query the db to see who owns this pic -->
-			<!-- If it's true then show delete post button ELSE don't -->
-			<!-- Create like and comments -->
+			<?php
+				include_once('includes/functions.php');
+				ini_set("display_errors", true);
+				if (isset($_GET['img'])) {
+					$img = $_GET['img'];
+				}
+				$userEmail = $_SESSION['user_email'];
+				// echo $like;
+				echo ("Like: ".tallyLikes($img));
+				echo "<a class='button is-primary' href='lookAll.php?Like=TRUE&img=$img'>Like Post</a>";
+				if (!isset($_GET['img'])) {
+					echo "";
+				}
+			?>
 
 			<form action="" method="post" enctype="multipart/form-data" align="center">
 						<table align="center">
@@ -148,26 +156,23 @@
   </body>
 </html>
 <?php
-	include('includes/functions.php');
+	include_once('includes/functions.php');
 	if (isset($_GET['Logout'])) {
 		if ($_GET['Logout'] == 'TRUE')
 			session_destroy();
 		echo "<script>window.open('index.php', '_self')</script>";
 	}
-	if (isset($_GET['Like']))
-	{
-		if ($_GET['Like'] == 'TRUE') {
-		// LIKE POST FUNCTION (ALSO CHECK IF THIS USER HAS LIKED THIS POST IF YES, UNLIKE)
-		// Likepost($img, $email, $uid, $content);
-		}
-	}
 	try {
 		include_once('includes/functions.php');
+		$userEmail = $_SESSION['user_email'];
 		$img = $_GET['img'];
-		// echo $img;
 		echoComments($img);
-
-
+		if (isset($_GET['Like']))
+		{
+			if ($_GET['Like'] == 'TRUE') {
+			likePost($img, $userEmail);
+			}
+		}
 	}
 	catch(PDOException $e) {
 		echo "ERROR: ".$e->getMessage();
@@ -175,19 +180,15 @@
 	}
 
 	if (isset($_POST['submitComment'])) {
-		include_once('includes/functions.php');
-
 		$comment = $_POST['txtcomment'];
 		$email = $_SESSION['user_email'];
 		$img = $_GET['img'];
-		//submitcomment($email, $img, $comment);
 		getPostID($img, $email, $comment);
+		commentNotif($img, $email);
 		echo "<script>window.open('#', '_self')</script>";
-		// --> get pk from the poster. needed? fuck no...
 	}
 	if (isset($_GET['Delete'])) {
 		if ($_GET['Delete'] == 'TRUE') {
-			// DELETE POST FUNCTION
 			$userEmail = $_SESSION['user_email'];
 			$img = $_GET['img'];
 			echo $img;

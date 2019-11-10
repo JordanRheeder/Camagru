@@ -104,20 +104,23 @@
 			<!-- Query the db to see who owns this pic -->
 			<!-- If it's true then show delete post button ELSE don't -->
 			<!-- Create like and comments -->
-			<?php
-				if (isset($_GET['img'])) {
-					$img = $_GET['img'];
-				}
-				echo "<a class='button is-primary' href='lookMy.php?Like=TRUE&img=$img'>Like Post</a>";
-				if (!isset($_GET['img'])) {
-					echo "";
-				}
-				else {
-					// query DB FUNCTION
-					echo "<a class='button is-primary' href='lookMy.php?Delete=TRUE&img=$img'>Delete Post</a>";
-				}
+		<?php
+			include_once('includes/functions.php');
+			if (isset($_GET['img'])) {
+				$img = $_GET['img'];
+			}
+			$userEmail = $_SESSION['user_email'];
+			echo ('Likes: '.tallyLikes($img));
+			echo "<a class='button is-primary' href='lookMy.php?Like=TRUE&img=$img'>Like Post</a>";
+			if (!isset($_GET['img'])) {
+				echo "";
+			}
+			else {
+				// query DB FUNCTION
+				echo "<a class='button is-primary' href='lookMy.php?Delete=TRUE&img=$img'>Delete Post</a>";
+			}
 
-			?>
+		?>
 		<form action="#" method="post" enctype="multipart/form-data" align="center">
 			<table align="center">
 				<br>
@@ -162,26 +165,23 @@
   </body>
 </html>
 <?php
-	include('includes/functions.php');
+	include_once('includes/functions.php');
 	if (isset($_GET['Logout'])) {
-		if ($_GET['Logout'] == 'TRUE')
-			session_destroy();
-		echo "<script>window.open('index.php', '_self')</script>";
-	}
-	if (isset($_GET['Like']))
-	{
-		if ($_GET['Like'] == 'TRUE') {
-		// LIKE POST FUNCTION (ALSO CHECK IF THIS USER HAS LIKED THIS POST IF YES, UNLIKE)
+			if ($_GET['Logout'] == 'TRUE')
+				logout();
+			echo "<script>window.open('index.php', '_self')</script>";
 		}
-	}
-
 	try {
 		include_once('includes/functions.php');
-		$img = $_GET['img'];
-		// echo $img;
+		$userEmail = $_SESSION['user_email'];
+		// $img = $_GET['img'];
 		echoComments($img);
-
-
+		if (isset($_GET['Like']))
+		{
+			if ($_GET['Like'] == 'TRUE') {
+			likePost($img, $userEmail);
+			}
+		}
 	}
 	catch(PDOException $e) {
 		echo "ERROR: ".$e->getMessage();
@@ -194,7 +194,7 @@
 			$comment = $_POST['txtcomment'];
 			$email = $_SESSION['user_email'];
 			$img = $_GET['img'];
-			//submitcomment($email, $img, $comment);
+			commentNotif($img, $email);
 			getPostID($img, $email, $comment);
 			echo "<script>window.open('', '_self')</script>";
 			// --> get pk from the poster. needed? fuck no...
