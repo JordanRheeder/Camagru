@@ -122,7 +122,8 @@
 						$row = $postQuery->fetch();
 						$postedBy = $row['user_id'];
 						$user_email = $_SESSION['user_email'];
-						newPost($postedBy, $user_email, $new_img, $postedWhenEpoch);
+						$username = $row['username'];
+						newPost($postedBy, $user_email, $new_img, $postedWhenEpoch, $username);
 					}
 
 					// echo "<script>alert('$hashedName')</script>";
