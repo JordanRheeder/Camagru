@@ -1,13 +1,12 @@
 <?php
 	ini_set("display_errors", true);
-	include ("config/db_setup.php");
+	include_once("config/db_setup.php");
 	if (session_id() === "") {
 		session_start();
 	}
 	else {
 		$session_id=session_id();
 	}
-	// include("functions/functions.php");
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -33,9 +32,7 @@
 			</div>
 			<div id="navbarBasicExample" class="navbar-menu">
 				<div class="navbar-start">
-					<a class="navbar-item" href="index.php">
-						Home
-					</a>
+					<a class="navbar-item" href="index.php">Home</a>
 			<?php
 				if(isset($_SESSION['user_email'])) {
 					// echo "<a href='index.php?Logout=TRUE'>Logout</a>";
@@ -64,8 +61,8 @@
 				}
 			?>
 
-				</div>
 			</div>
+				</div>
 		</div>
 			<div class="navbar-end">
 				<div class="navbar-item">
@@ -133,32 +130,28 @@
 					<form action="#" method="post" enctype="multipart/form-data" align="center">
 						<table align='center'>
 	<tr>
-		<td><input class="checkbox is-primary" type='checkbox' name='sticker' value='1'/>1</td>
+		<td><input class="checkbox is-primary" type='checkbox' name='sticker[]' value='1'/>1</td>
 	</tr>
 	<tr>
-		<td><input class="checkbox is-primary" type='checkbox' name='sticker' value='2'/>2</td>
+		<td><input class="checkbox is-primary" type='checkbox' name='sticker[]' value='2'/>2</td>
 	</tr>
 	<tr>
-		<td><input class="checkbox is-primary" type='checkbox' name='sticker' value='3'/>3</td>
+		<td><input class="checkbox is-primary" type='checkbox' name='sticker[]' value='3'/>3</td>
 	</tr>
 	<tr>
-		<td><input class="checkbox is-primary" type='checkbox' name='sticker' value='4'/>4</td>
+		<td><input class="checkbox is-primary" type='checkbox' name='sticker[]' value='4'/>4</td>
 	</tr>
 	<td><input id='selfie' type='hidden' name='selfie' value='' style="margin-left: -106px;"/></td>
 	<td><input id='submitSelfie' class='button is-primary' onClick="download()" type='submit' name='submitSelfie' value='Upload Post' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
-	<!-- <td><input class="button is-primary" type='submit' name='apply' value='apply'/></td> -->
 						</table>
 					</form>
 			</p>
-	      </div>
-	    </div>
-	  </div>
+		</div>
 	</div>
 	</div>
-
+	</div>
+	</div>
 		<script>
-		// 'use strict';
-
 		const video = document.getElementById('video');
 		const canvas = document.getElementById('canvas');
 		const snap = document.getElementById("snap");
@@ -213,17 +206,20 @@
 	}
 </script>
 	<?php
-		include('includes/functions.php');
+		include_once('includes/functions.php');
 		// if (isset($_POST['sticker'])) {
 		// 	global $choice;
 		// 	$choice = $_POST['sticker'];
 		// }
+			$selfie = $_POST['selfie'];
+			$filename_path = md5(time().uniqid()).".png";
+			$imgsrc = storeImage($selfie, $filename_path);
 			if (isset($_POST['submitSelfie'])) {
-				if (isset($_POST['sticker'])) {
-				$choice = $_POST['sticker'];
-				$selfie = $_POST['selfie'];
-				$filename_path = md5(time().uniqid()).".png";
-				storeImage($selfie, $filename_path, $choice);
+				if(!empty($_POST['sticker'])) {
+				foreach($_POST['sticker'] as $check) {
+					$imgs = superImpose($imgsrc, $check);
+				}
+				echo "<div align=middle style='margin-top:-536px'><img src='users/user_posts/$imgsrc' style='')/></div>";
 				if (isset($_SESSION['user_email'])) {
 					include_once('config/connect.php');
 					$user_email = $_SESSION['user_email'];
@@ -241,11 +237,13 @@
 		}
 
 	?>
-	<?php
-		include_once('includes/functions.php');
-		$email = $_SESSION['user_email'];
-		get_upload_thumbs($email);
-	?>
+	<div>
+		<?php
+			include_once("includes/functions.php");
+			$email = $_SESSION['user_email'];
+			get_upload_thumbs($email);
+		?>
+	</div>
 	</body>
 </html>
 <?php

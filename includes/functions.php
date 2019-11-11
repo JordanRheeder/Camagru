@@ -298,7 +298,7 @@
 		include('config/connect.php');
 		ini_set("display_errors", TRUE);
 		try {
-			$postQuery = ("SELECT * FROM `images` WHERE post_byEmail='$user_email'");
+			$postQuery = ("SELECT * FROM `images` WHERE post_byEmail='$user_email' ORDER BY post_date DESC");
 			$postQuery = $dbh->prepare($postQuery);
 			$postQuery->execute();
 			$row = $postQuery->fetchAll(PDO::FETCH_COLUMN, '1');
@@ -317,7 +317,7 @@
 		include('config/connect.php');
 		ini_set("display_errors", TRUE);
 		try {
-			$postQuery = ("SELECT * FROM `images`");
+			$postQuery = ("SELECT * FROM `images` ORDER BY post_date DESC");
 			$postQuery = $dbh->prepare($postQuery);
 			$postQuery->execute();
 			$row = $postQuery->fetchAll(PDO::FETCH_COLUMN, '1');
@@ -347,12 +347,12 @@
 		}
 		return (1);
 	}
-	function storeImage($rawData, $filename_path, $choice) {
+	function storeImage($rawData, $filename_path) {
 		$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $rawData));
 		file_put_contents("users/user_posts/".$filename_path,$data);
 		$truePath = $filename_path;
-		superImpose($truePath, $choice);
-		return;
+		// superImpose($truePath, $choice);
+		return ($truePath);
 	}
 	function superImpose($imgsrc, $choice) {
 		$your_original_image = ("users/user_posts/$imgsrc");
@@ -363,12 +363,19 @@
 		# If you know your originals are of type PNG.
 		$image = imagecreatefrompng($your_original_image);
 		$frame = imagecreatefrompng($your_frame_image);
-		imagecopymerge($image, $frame, 0, 0, 0, 0, 128, 128, 40);
-		# Save the image to a file
+		if ($choice == 1)
+			imagecopymerge($image, $frame, 0, 0, 0, 0, 128, 128, 40);
+		else if ($choice == 2)
+			imagecopymerge($image, $frame, 128, 128, 0, 0, 128, 128, 40);
+		else if ($choice == 3)
+			imagecopymerge($image, $frame, 256, 256, 0, 0, 128, 128, 40);
+		else if ($choice == 4)
+			imagecopymerge($image, $frame, 128, 256, 0, 0, 128, 128, 40);
 
+		# Save the image to a file
 		imagepng($image, "users/user_posts/$imgsrc");
 		# Output straight to the browser.
-		echo "<div align=middle style='margin-top:-525px'><img src='users/user_posts/$imgsrc' style='')/></div>";
+
 		return (1);
 	}
 
@@ -457,7 +464,6 @@
 
 	function tallyLikes($img) {
 		include('config/connect.php');
-		// ini_set("display_errors", TRUE);
 		$SelectQuery = ("SELECT `user_email` FROM `likes` WHERE image_name='$img'");
 		$SelectQuery = $dbh->prepare($SelectQuery);
 		$SelectQuery->execute();
@@ -475,7 +481,7 @@
 			while ($img = $getImages->fetch()) {
 				$img_name = $img['img_name'];
 				// $img_id = $img['UID'];
-				echo ("<figure class='image'><a href='lookAll.php?img=$img_name'><img src='users/user_posts/$img_name' style='width: 128px; height: 128px; positon:absolute; top:-300px;'/></a></figure>");
+				echo ("<a href='lookAll.php?img=$img_name'><img src='users/user_posts/$img_name' style='width: 128px; height: 128px;'/></a>");
 			}
 		}
 	}

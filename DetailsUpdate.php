@@ -135,6 +135,24 @@
 				</tr>
 				</table>
 		</form>
+				<form action="" method="post" enctype="multipart/form-data" align="center">
+						<table align='center'>
+						<tr>
+							<td align='center' style='color: white'>......</td>
+							<td><input placeholder='1 = ON 0 = OFF' type='text' name='notify' ></td>
+							<td><input class='button is-primary' type='submit' name='updateNotify' value='Update Acc Notications' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+						</tr>
+						</table>
+				</form>
+				<form action="" method="post" enctype="multipart/form-data" align="center">
+						<table align='center'>
+						<tr>
+							<td align='center' style='color: white'>......</td>
+							<td><input placeholder='1 = ON 0 = OFF' type='text' name='cNotify' ></td>
+							<td><input class='button is-primary' type='submit' name='commentNotify' value='Comment Notications' style='margin-left: 3px; margin-top: 0px; width: 120px; height: 50%; font-size: 10px; align:center'/></td>
+						</tr>
+						</table>
+				</form>
 		<form action="" method="post" enctype="multipart/form-data" align="center">
 				<table align='center'>
 				<tr>
@@ -219,6 +237,16 @@
 			$new_username = $_POST['UN'];
 			newUN($old_username, $new_username, $user_email);
 		}
+		else if (isset($_POST['updateNotify'])) {
+			$notify = $_POST['notify'];
+			$user_email = $_SESSION['user_email'];
+			update_notify($user_email, $notify);
+		}
+		else if (isset($_POST['commentNotify'])) {
+			$cNotify = $_POST['cNotify'];
+			$user_email = $_SESSION['user_email'];
+			// update_ComNotify($user_email, $cNotify);
+		}
 		?>
 		<!--footer ends-->
 		<!-- Scripts -->
@@ -246,7 +274,7 @@
 </body>
 <?php
 	try {
-		include ('config/connect.php');
+		include('config/connect.php');
 	}
 	catch(PDOException $e) {
 		echo "ERROR: ".$e->getMessage();
