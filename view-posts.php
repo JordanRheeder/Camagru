@@ -22,7 +22,7 @@
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="index.php">
+				<a class="navbar-item" href="index.php?pageno=1">
 					<img src="images/final.gif" width="112px" height="112px">
 				</a>
 				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -33,7 +33,7 @@
 			</div>
 			<div id="navbarBasicExample" class="navbar-menu">
 				<div class="navbar-start">
-					<a class="navbar-item" href="index.php">
+					<a class="navbar-item" href="index.php?pageno=1">
 						Home
 					</a>
 			<?php
@@ -134,9 +134,24 @@
   </body>
 </html>
 <?php
-  if (isset($_GET['Logout'])) {
-	if ($_GET['Logout'] == 'TRUE')
-	  session_destroy();
-	  echo "<script>window.open('index.php', '_self')</script>";
-  }
+	// if ($_SESSION == NULL){
+	// 	echo "";
+	// }
+	// else {
+	// 	$email = $_SESSION['user_email'];
+	// 	if (isVerifiedUser($email) == '1') {
+	// 		echo "";
+	// 	}
+	// 	else if (isVerifiedUser($email) == '0')
+	// 	{
+	// 		echo "<script>alert('Verify your account please')</script>";
+	// 		echo "<script>window.open('index.php', '_self')</script>";
+	// 		session_destroy();
+	// 	}
+	// }
+	if (isset($_GET['Logout'])) {
+		if ($_GET['Logout'] == 'TRUE')
+			session_destroy();
+			echo "<script>window.open('index.php', '_self')</script>";
+	}
 ?>

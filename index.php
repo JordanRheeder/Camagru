@@ -1,6 +1,6 @@
 <?php
 	ini_set("display_errors", true);
-	include ("config/db_setup.php");
+	include_once("config/db_setup.php");
 	include_once("includes/functions.php");
 	if (session_id() === "") {
 		session_start();
@@ -22,7 +22,7 @@
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="index.php">
+				<a class="navbar-item" href="index.php?pageno=1">
 					<img src="images/final.gif" width="112px" height="112px">
 				</a>
 				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -33,7 +33,7 @@
 			</div>
 			<div id="navbarBasicExample" class="navbar-menu">
 				<div class="navbar-start">
-					<a class="navbar-item" href="index.php">
+					<a class="navbar-item" href="index.php?pageno=1">
 						Home
 					</a>
 			<?php
@@ -95,6 +95,63 @@
 		</nav>
 		<!-- Body -->
 		<div>
+					<div>
+						<?php
+							include_once('config/connect.php');
+							if (isset($_GET['pageno'])) {
+								$pageno = $_GET['pageno'];
+							} else {
+								$pageno = 1;
+							}
+							$query = "SELECT count(`img_name`) FROM `images`";
+							$query = $dbh->prepare($query);
+							$query->execute();
+							$row = $query->fetch();
+							$numrows = $row[0];
+							$rows_per_page = 10;
+							$lastpage = ceil($numrows/$rows_per_page);
+							$pagenot = (int)$pageno;
+							if ($pageno > $lastpage) {
+								$pageno = $lastpage;
+							}
+							if ($pageno < 1) {
+								$pageno = 1;
+							}
+							$limit = 'LIMIT '.($pageno - 1) * $rows_per_page.','.$rows_per_page;
+							$query = "SELECT `img_name` FROM `images` $limit";
+							$query = $dbh->prepare($query);
+							$query->execute();
+							$result = $query->fetch();
+							if ($pageno == 1) {
+								echo " FIRST PREV ";
+							} else {
+								echo " <a href='{$_SERVER['PHP_SELF']}?pageno=1'>FIRST</a>";
+								$prevpage = $pageno-1;
+								echo " <a href='{$_SERVER['PHP_SELF']}?pageno=$prevpage'>PREV</a>";
+							}
+							echo " (Page $pageno of $lastpage) ";
+							if ($pageno == $lastpage) {
+								echo "NEXT LAST";
+							} else {
+								$nextpage = $pageno+1;
+								echo "<a href='{$_SERVER['PHP_SELF']}?pageno=$nextpage'>NEXT</a>";
+								echo "<a href='{$_SERVER['PHP_SELF']}?pageno=$lastpage'> LAST</a>";
+							}
+							include_once('includes/functions.php');
+							if(isset($_SESSION['user_email'])) {
+								$user_email = $_SESSION['user_email'];
+								if (isset($_GET['pageno'])) {
+									$pageNum = $_GET['pageno'];
+									$start = 5*$pageNum;
+
+								$img = allUsersPosts($start);
+								foreach ($img as $img) {
+									echo "<a href=lookAll.php?img=$img><img src='users/user_posts/$img' alt='$img' style='width:100%;max-width:300px'></a>";
+								}
+								}
+							}
+						?>
+					</div>
 		</div>
 		<!-- Body ends -->
 		<!--footer starts-->

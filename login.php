@@ -18,7 +18,7 @@ if (session_id() === "") {
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 		  <div class="navbar-brand">
-		    <a class="navbar-item" href="index.php">
+		    <a class="navbar-item" href="index.php?pageno=1">
 		      <img src="images/final.gif" width="112px" height="112px">
 		    </a>
 
@@ -31,7 +31,7 @@ if (session_id() === "") {
 
 		  <div id="navbarBasicExample" class="navbar-menu">
 		    <div class="navbar-start">
-		      <a class="navbar-item" href="index.php">
+		      <a class="navbar-item" href="index.php?pageno=1">
 		        Home
 		      </a>
 

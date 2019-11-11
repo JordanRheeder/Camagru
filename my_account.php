@@ -15,7 +15,7 @@
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="index.php">
+				<a class="navbar-item" href="index.php?pageno=1">
 					<img src="images/final.gif" width="112px" height="112px">
 				</a>
 				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -26,7 +26,7 @@
 			</div>
 			<div id="navbarBasicExample" class="navbar-menu">
 				<div class="navbar-start">
-					<a class="navbar-item" href="index.php">Home</a>
+					<a class="navbar-item" href="index.php?pageno=1">Home</a>
 			<?php
 				if(isset($_SESSION['user_email'])) {
 					echo "<a class='navbar-item' href='my_account.php'>My Account</a>";

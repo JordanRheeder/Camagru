@@ -24,7 +24,7 @@
 			sendNotif($user_email);
 		} else {
 			$updt_sql = ("UPDATE `users` SET notify=0 WHERE user_email='$user_email'");
-			$updt_notif = $con->prepare($updt_sql);
+			$updt_notif = $dbh->prepare($updt_sql);
 			$updt_notif->execute();
 			$_SESSION['notify'] = 0;
 			sendNotif($user_email);

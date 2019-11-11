@@ -22,7 +22,7 @@
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="index.php">
+				<a class="navbar-item" href="index.php?pageno=1">
 					<img src="images/final.gif" width="112px" height="112px">
 				</a>
 				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -33,7 +33,7 @@
 			</div>
 			<div id="navbarBasicExample" class="navbar-menu">
 				<div class="navbar-start">
-					<a class="navbar-item" href="index.php">
+					<a class="navbar-item" href="index.php?pageno=1">
 						Home
 					</a>
 			<?php
@@ -180,6 +180,7 @@
 		{
 			if ($_GET['Like'] == 'TRUE') {
 			likePost($img, $userEmail);
+			echo "<script>window.open('lookMy.php?img=$img', '_self')</script>";
 			}
 		}
 	}
@@ -196,7 +197,7 @@
 			$img = $_GET['img'];
 			commentNotif($img, $email);
 			getPostID($img, $email, $comment);
-			echo "<script>window.open('', '_self')</script>";
+			echo "<script>window.open('lookMy.php?img=$img', '_self')</script>";
 			// --> get pk from the poster. needed? fuck no...
 		}
 
