@@ -62,7 +62,7 @@
 						echo "<a class='navbar-item' href='view-posts.php'>My Posts</a>";
 					}
 					if (isset($_SESSION['user_email'])) {
-						echo "<a class='navbar-item' href='view-posts-all.php'>All Posts</a>";
+						echo "<a class='navbar-item' href='view-posts-all.php?pageno=1'>All Posts</a>";
 					}
 				}
 			?>
@@ -97,12 +97,57 @@
 		</nav>
 		<div>
 			<?php
+				include('config/connect.php');
+				if (isset($_GET['pageno'])) {
+					$pageno = $_GET['pageno'];
+				} else {
+					$pageno = 1;
+				}
+				$query = "SELECT count(`img_name`) FROM `images`";
+				$query = $dbh->prepare($query);
+				$query->execute();
+				$row = $query->fetch();
+				$numrows = $row[0];
+				$rows_per_page = 10;
+				$lastpage = ceil($numrows/$rows_per_page);
+				$pagenot = (int)$pageno;
+				if ($pageno > $lastpage) {
+					$pageno = $lastpage;
+				}
+				if ($pageno < 1) {
+					$pageno = 1;
+				}
+				$limit = 'LIMIT '.($pageno - 1) * $rows_per_page.','.$rows_per_page;
+				$query = "SELECT `img_name` FROM `images` $limit";
+				$query = $dbh->prepare($query);
+				$query->execute();
+				$result = $query->fetch();
+				if ($pageno == 1) {
+					echo " FIRST PREV ";
+				} else {
+					echo " <a href='{$_SERVER['PHP_SELF']}?pageno=1'>FIRST</a>";
+					$prevpage = $pageno-1;
+					echo " <a href='{$_SERVER['PHP_SELF']}?pageno=$prevpage'>PREV</a>";
+				}
+				echo " (Page $pageno of $lastpage) ";
+				if ($pageno == $lastpage) {
+					echo "NEXT LAST";
+				} else {
+					$nextpage = $pageno+1;
+					echo "<a href='{$_SERVER['PHP_SELF']}?pageno=$nextpage'>NEXT</a>";
+					echo "<a href='{$_SERVER['PHP_SELF']}?pageno=$lastpage'> LAST</a>";
+				}
 				include ('includes/functions.php');
 				if(isset($_SESSION['user_email'])) {
 					$user_email = $_SESSION['user_email'];
-					$ima = allUsersPosts();
-					foreach ($ima as $img) {
+					if (isset($_GET['pageno'])) {
+						$pageNum = $_GET['pageno'];
+						$start = 5*$pageNum;
+
+					$img = allUsersPosts($start);
+					foreach ($img as $img) {
 						echo "<a href=lookAll.php?img=$img><img src='users/user_posts/$img' alt='$img' style='width:100%;max-width:300px'></a>";
+					}
 					}
 				}
 			?>
