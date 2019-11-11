@@ -58,7 +58,7 @@
 						echo "<a class='navbar-item' href='view-posts.php'>My Posts</a>";
 					}
 					if (isset($_SESSION['user_email'])) {
-						echo "<a class='navbar-item' href='view-posts-all.php'>All Posts</a>";
+						echo "<a class='navbar-item' href='view-posts-all.php?pageno=1'>All Posts</a>";
 					}
 				}
 			?>

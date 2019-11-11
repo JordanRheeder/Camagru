@@ -26,12 +26,9 @@
 			</div>
 			<div id="navbarBasicExample" class="navbar-menu">
 				<div class="navbar-start">
-					<a class="navbar-item" href="index.php">
-						Home
-					</a>
+					<a class="navbar-item" href="index.php">Home</a>
 			<?php
 				if(isset($_SESSION['user_email'])) {
-					// echo "<a href='index.php?Logout=TRUE'>Logout</a>";
 					echo "<a class='navbar-item' href='my_account.php'>My Account</a>";
 				}
 				else {
@@ -52,12 +49,11 @@
 						echo "<a class='navbar-item' href='view-posts.php'>My Posts</a>";
 					}
 					if (isset($_SESSION['user_email'])) {
-						echo "<a class='navbar-item' href='view-posts-all.php'>All Posts</a>";
+						echo "<a class='navbar-item' href='view-posts-all.php?pageno=1'>All Posts</a>";
 					}
 				}
 			?>
 			</div>
-
 		</div>
 			<div class="navbar-end">
 				<div class="navbar-item">
@@ -91,46 +87,34 @@
 						if(!$user_email = $_SESSION['user_email']) {
 							echo "<script>window.open('index.php', '_self')</script>";
 						}
-						// echo "user: $user_email";
 					?>
 				</h1>
 				<figure class="image is-128x128" style="margin-left:50px;">
 					<?php
 						include ('config/connect.php');
-						// We need to select the users profile picture from DB.
-						// ***************************************************
 						$queryIMG = ("SELECT * from `users` WHERE user_email=:user_email");
 						$queryPrep = $dbh->prepare($queryIMG);
 						$queryPrep->bindParam(':user_email', $user_email, PDO::PARAM_STR);
 						$queryPrep->execute();
 						$row = $queryPrep->fetch();
 						$check_img = $row['user_image'];
-						// echo $check_img;
-						// echo "<script>alert('1');</script>";
-						// echo "123";
-						if (empty($check_img)) { // might throw error...
-							// display default img
-							// echo "<img class='is-rounded' src='users/default.png'>";
+						if (empty($check_img)) {
 							echo "<img class='is-rounded' src='https://bulma.io/images/placeholders/128x128.png'>";
 						}
 						else {
 							echo "<img class='is-rounded' src='users/user_images/$check_img' style='width: 128px; height: 128px'>";
 						}
 					?>
-					<!-- <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png"> -->
 				</figure>
-
 		</div>
 		<br/>
 		<div class="buttons" style="margin-top:10px; margin-left: 50px;">
 			<?php echo "<a class='button is-primary' href='DetailsUpdate.php'>Edit Account</a>"; ?>
 		</div>
 		<div align="center" style="margin-top:-200px; margin-left: center position:fixed">
-			test;
+			<?php
+			?>
 		</div>
-
-		<!--footer ends-->
-
 		<!-- Scripts -->
 		<script>document.addEventListener('DOMContentLoaded', () => {
 			// Get all "navbar-burger" elements
@@ -154,6 +138,7 @@
 		</script>
 		<!-- Scripts end -->
 </body>
+
 <?php
 	try {
 		include ('config/connect.php');
@@ -163,7 +148,11 @@
 		exit(2);
 	}
 ?>
+<div id="footer">
+	<h2 style="text-align:center; padding-top:30px;">jrheeder</h2>
+</div>
 </html>
+
 <?php
 	if (isset($_GET['Logout'])) {
 		if ($_GET['Logout'] == 'TRUE')
