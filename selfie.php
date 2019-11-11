@@ -207,13 +207,12 @@
 </script>
 	<?php
 		include_once('includes/functions.php');
-		// if (isset($_POST['sticker'])) {
-		// 	global $choice;
-		// 	$choice = $_POST['sticker'];
-		// }
-			$selfie = $_POST['selfie'];
+			if(isset($_POST['submitSelfie'])) {
+				$selfie = $_POST['selfie'];
+
 			$filename_path = md5(time().uniqid()).".png";
 			$imgsrc = storeImage($selfie, $filename_path);
+			}
 			if (isset($_POST['submitSelfie'])) {
 				if(!empty($_POST['sticker'])) {
 				foreach($_POST['sticker'] as $check) {
@@ -247,9 +246,24 @@
 	</body>
 </html>
 <?php
-  if (isset($_GET['Logout'])) {
-	if ($_GET['Logout'] == 'TRUE')
-	  session_destroy();
-	  echo "<script>window.open('index.php', '_self')</script>";
-  }
+	// if ($_SESSION == NULL){
+	// 	echo "";
+	// }
+	// else {
+	// 	$email = $_SESSION['user_email'];
+	// 	if (isVerifiedUser($email) == '1') {
+	// 		echo "";
+	// 	}
+	// 	else if (isVerifiedUser($email) == '0')
+	// 	{
+	// 		echo "<script>alert('Verify your account please')</script>";
+	// 		echo "<script>window.open('index.php', '_self')</script>";
+	// 		session_destroy();
+	// 	}
+	// }
+	if (isset($_GET['Logout'])) {
+		if ($_GET['Logout'] == 'TRUE')
+			session_destroy();
+		echo "<script>window.open('index.php', '_self')</script>";
+	}
 ?>

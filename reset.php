@@ -1,14 +1,13 @@
 <?php
 	ini_set("display_errors", true);
-	include ("config/db_setup.php");
+	include_once("config/db_setup.php");
+	include_once("includes/functions.php");
 	if (session_id() === "") {
 		session_start();
 	}
 	else {
 		$session_id=session_id();
-		// echo ($session_id);
 	}
-	// include("functions/functions.php");
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -22,65 +21,56 @@
 <body>
 	<!-- <div class="main_wrapper"> -->
 		<nav class="navbar" role="navigation" aria-label="main navigation">
-		  <div class="navbar-brand">
-		    <a class="navbar-item" href="index.php">
-		      <img src="images/final.gif" width="112px" height="112px">
-		    </a>
-
-		    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-		      <span aria-hidden="true"></span>
-		      <span aria-hidden="true"></span>
-		      <span aria-hidden="true"></span>
-		    </a>
-		  </div>
-
-		  <div id="navbarBasicExample" class="navbar-menu">
-		    <div class="navbar-start">
-		      <a class="navbar-item" href="index.php">
-		        Home
-		      </a>
-
-
+			<div class="navbar-brand">
+				<a class="navbar-item" href="index.php">
+					<img src="images/final.gif" width="112px" height="112px">
+				</a>
+				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+			</div>
+			<div id="navbarBasicExample" class="navbar-menu">
+				<div class="navbar-start">
+					<a class="navbar-item" href="index.php">
+						Home
+					</a>
 			<?php
 				if(isset($_SESSION['user_email'])) {
-					// echo "<a href='index.php?Logout=TRUE'>Logout</a>";
 					echo "<a class='navbar-item' href='my_account.php'>My Account</a>";
 				}
 				else {
 					echo "";
 				}
 			?>
+			<div class="navbar-item has-dropdown is-hoverable">
+			<?php
+				if(!isset($_SESSION['user_email'])) {
+					echo "";
+				}
+				else {
+					echo "</a>";
+					echo "<a class='navbar-item' href='post-img.php'>";
+					echo "Post";
+					echo "</a>";
+					if (isset($_SESSION['user_email'])) {
+						echo "<a class='navbar-item' href='view-posts.php'>My Posts</a>";
+					}
+					if (isset($_SESSION['user_email'])) {
+						echo "<a class='navbar-item' href='view-posts-all.php?pageno=1'>All Posts</a>";
+					}
+				}
+			?>
+			</div>
 
-
-
-
-
-		      <div class="navbar-item has-dropdown is-hoverable">
-		        <a class="navbar-link">
-		          Placeholder
-		        </a>
-
-		        <div class="navbar-dropdown">
-		          <a class="navbar-item">
-		            Placeholder
-		          </a>
-		          <a class="navbar-item">
-		            Placeholder
-		          </a>
-		          <a class="navbar-item">
-		            Placeholder
-		          </a>
-		          <hr class="navbar-divider">
-		          <a class="navbar-item">
-		            Placeholder
-		          </a>
-		        </div>
-		      </div>
-		    </div>
-			    <div class="navbar-end">
-			      <div class="navbar-item">
-			        <div class="buttons">
-			            <?php
+				</div>
+			</div>
+		</div>
+			<div class="navbar-end">
+				<div class="navbar-item">
+					<div class="buttons">
+						<?php
 							if(isset($_SESSION['user_email'])) {
 								echo "";
 							}
@@ -90,7 +80,6 @@
 								echo "</a>";
 							}
 						?>
-
 						<?php
 						if(isset($_SESSION['user_email'])) {
 							echo "<a class='button is-light' href='login.php?Logout=TRUE'>Log out</a>";
@@ -100,10 +89,9 @@
 						}
 						?>
 					</div>
-			      </div>
-			    </div>
-			  </div>
-			</nav>
+				</div>
+			</div>
+		</nav>
 		<!--content wrapper starts-->
 		<div class="content_wrapper">
 		<!-- test; -->
@@ -153,7 +141,7 @@
 </html>
 <?php
 	try {
-		include ('includes/functions.php');
+		include_once('includes/functions.php');
 	}
 	catch(PDOException $e) {
 		echo "ERROR: ".$e->getMessage();

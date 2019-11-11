@@ -154,6 +154,21 @@
 </html>
 
 <?php
+	// if ($_SESSION == NULL){
+	// 	echo "";
+	// }
+	// else {
+	// 	$email = $_SESSION['user_email'];
+	// 	if (isVerifiedUser($email) == '1') {
+	// 		echo "";
+	// 	}
+	// 	else if (isVerifiedUser($email) == '0')
+	// 	{
+	// 		echo "<script>alert('Verify your account please')</script>";
+	// 		echo "<script>window.open('index.php', '_self')</script>";
+	// 		session_destroy();
+	// 	}
+	// }
 	if (isset($_GET['Logout'])) {
 		if ($_GET['Logout'] == 'TRUE')
 		session_destroy();
