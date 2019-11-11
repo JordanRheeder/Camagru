@@ -313,14 +313,14 @@
 		}
 		return ($array);
 	}
-	function allUsersPosts() {
+	function allUsersPosts($start) {
 		include('config/connect.php');
 		ini_set("display_errors", TRUE);
 		try {
-			$postQuery = ("SELECT * FROM `images` ORDER BY post_date DESC");
+			$postQuery = ("SELECT `img_name` FROM `images` ORDER BY post_date DESC LIMIT $start, 5");
 			$postQuery = $dbh->prepare($postQuery);
 			$postQuery->execute();
-			$row = $postQuery->fetchAll(PDO::FETCH_COLUMN, '1');
+			$row = $postQuery->fetchAll(PDO::FETCH_COLUMN, '0');
 			$array = array();
 			foreach ($row as $img) {
 				$array[] = $img;
