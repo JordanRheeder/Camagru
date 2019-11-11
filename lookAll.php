@@ -10,12 +10,12 @@
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Camagru</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Camagru</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 	</head>
 <body>
 	<!-- <div class="main_wrapper"> -->
@@ -57,7 +57,7 @@
 						echo "<a class='navbar-item' href='view-posts.php'>My Posts</a>";
 					}
 					if (isset($_SESSION['user_email'])) {
-						echo "<a class='navbar-item' href='view-posts-all.php'>All Posts</a>";
+						echo "<a class='navbar-item' href='view-posts-all.php?pageno=1'>All Posts</a>";
 					}
 				}
 			?>
@@ -151,8 +151,6 @@
 		});
 		</script>
 		<!-- Scripts end -->
-
-
   </body>
 </html>
 <?php
@@ -171,6 +169,7 @@
 		{
 			if ($_GET['Like'] == 'TRUE') {
 			likePost($img, $userEmail);
+			echo "<script>window.open('lookAll.php?img=$img', '_self')</script>";
 			}
 		}
 	}
@@ -178,15 +177,20 @@
 		echo "ERROR: ".$e->getMessage();
 		exit(2);
 	}
-
-	if (isset($_POST['submitComment'])) {
-		$comment = $_POST['txtcomment'];
-		$email = $_SESSION['user_email'];
-		$img = $_GET['img'];
-		getPostID($img, $email, $comment);
-		commentNotif($img, $email);
-		echo "<script>window.open('#', '_self')</script>";
+	try {
+		if (isset($_POST['submitComment'])) {
+			$comment = $_POST['txtcomment'];
+			$email = $_SESSION['user_email'];
+			$img = $_GET['img'];
+			getPostID($img, $email, $comment);
+			commentNotif($img, $email);
+			echo "<script>window.open('lookAll.php?img=$img', '_self')</script>";
+		}
 	}
+	catch(PDOException $e) {
+		echo "ERROR: Please do not inject code...";
+		exit(2);
+		}
 	if (isset($_GET['Delete'])) {
 		if ($_GET['Delete'] == 'TRUE') {
 			$userEmail = $_SESSION['user_email'];
